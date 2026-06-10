@@ -28,78 +28,41 @@
 
 ---
 
-## 📸 Dashboard Preview
+## 📸 Dashboard Screenshots
 
-> *Click the live link above to explore all 16+ interactive charts with hover tooltips, zoom, and real-time filters.*
+> All charts are fully interactive in the live dashboard — hover for tooltips, click to filter, drag to zoom.
 
-### Chart 1 — Monthly Revenue & Profit Trend
+### Overview Tab — KPI Header & Monthly Trend
 
-```
- Revenue ($)    Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
- ───────────────────────────────────────────────────────────────────────────────────
- $673K ┤                                                                    ███ ████
- $588K ┤                                                               ███
- $485K ┤                                                          ███  ░░░
- $464K ┤                                           ███  ███  ███  ░░░
- $440K ┤                      ███  ███  ░░░  ███   ░░░  ░░░  ░░░
- $378K ┤         ░░░  ███     ░░░  ░░░       ░░░
- $321K ┤ ███     ░░░  ░░░
- $298K ┤ ░░░  ███
-       └───────────────────────────────────────────────────────────────────────────
-              ███ Revenue (line)   ░░░ Profit (bar)
- Key insight: Q4 (Oct–Dec) = 32.9% of annual revenue ($1.75M) despite being 25% of the year.
-```
+![Overview — KPI header, 8 metric cards, Monthly Sales & Profit dual-axis chart](docs/screenshots/01-overview-hero.jpg)
 
-### Chart 2 — Discount Impact on Profit Margin (The Danger Zone)
+### Overview Tab — Growth, Quarterly & Regional Breakdown
 
-```
- Net Margin    Sales Volume
- ──────────────────────────────────────────────────────────
-  33.5% │ ████████████████████████  $1.85M  ← 0% discount
-  30.3% │ ████████████████████      $1.42M  ← 1–5%
-  26.4% │ ████████████████          $1.10M  ← 6–10%
-  19.4% │ ████████████              $0.62M  ← 11–15%
-  12.5% │ ████                      $0.28M  ← 16–20%
-  -0.2% │ █  ← NEGATIVE MARGIN      $0.09M  ← 21%+
- ───────────────────────────────────────────────────────────
- ⚠️  Every +5pp discount = −2.8pp net margin compression.
-     Capping promotions at 15% could recover ~$130K/year.
-```
+![Overview — MoM Revenue Growth %, Quarterly Performance, Revenue by Region, Customer Segment Split](docs/screenshots/02-overview-bottom.jpg)
 
-### Chart 3 — Profit Margin Heatmap (Category × Region)
+### Products & Categories — Revenue, Margin & Top 10
 
-```
-              West    East    South   Central
- ─────────────────────────────────────────────────
- Books       │ 49.8%  50.5%   48.2%   49.3%  │ 🟢 Highest
- Beauty      │ 41.2%  42.3%   40.0%   41.8%  │ 🟢
- Clothing    │ 38.9%  40.1%   37.5%   39.2%  │ 🟢
- Sports      │ 34.5%  35.8%   33.2%   34.9%  │ 🟡
- Home & Kit. │ 33.2%  34.5%   32.1%   31.8%  │ 🟡
- Food        │ 33.2%  34.1%   32.5%   33.8%  │ 🟡
- Electronics │ 29.5%  30.1%   27.8%   28.9%  │ 🔴 Below avg
- ─────────────────────────────────────────────────
-  South consistently lowest across all categories → pricing review opportunity.
-```
+![Products — Category Revenue vs Profit grouped bar, Profit Margin % by Category with avg line, Top 10 Products horizontal bar](docs/screenshots/03-products-categories.jpg)
 
-### Chart 4 — Scenario Analysis Engine (Interactive)
+### Products — Discount Impact & Category Treemap
 
-```
- ┌─────────────────────────────────────────────────────────────────┐
- │  🔬 What-If Scenario Analysis Engine                           │
- │                                                                 │
- │  Revenue Growth:  ────────●────────────  +5%                   │
- │  Margin Shift:    ──────●──────────────   0 pp                  │
- │  Discount Change: ────────────●────────   0%                   │
- │  New Category:    ●────────────────────  $0K                   │
- │                                                                 │
- │  📊 Projected Revenue  $5.58M   ▲ +$267K                       │
- │  💰 Projected Profit   $1.76M   ▲ + $84K                       │
- │  📈 Projected Margin   31.6%    → same                         │
- │  🧾 Est. Transactions  9,820    ▲ +467                         │
- └─────────────────────────────────────────────────────────────────┘
-  Sliders update all four cards in real time — no page reload.
-```
+![Products — Discount Bracket Sales & Margin Impact dual-axis chart, Category Revenue Share Treemap](docs/screenshots/04-discount-treemap.jpg)
+
+### Customers Tab — Age Groups, Payments & Loyalty
+
+![Customers — Revenue & Profit by Age Group, Payment Method Usage, Loyalty Tier Donut, Segment Revenue vs Profit Bubble](docs/screenshots/05-customers.jpg)
+
+### Operations Tab — Day of Week, Shipping & Cumulative YTD
+
+![Operations — Sales by Day of Week (weekend peak highlighted), Shipping Mode Analysis, Revenue by Region Donut, Cumulative Revenue YTD vs Target](docs/screenshots/06-operations.jpg)
+
+### Scenario Analysis Engine — Live What-If Sliders
+
+![Scenario Analysis — 4 interactive sliders, projected KPI cards updating in real time, Scenario vs Baseline bar chart, Sensitivity line chart](docs/screenshots/07-scenario-engine.jpg)
+
+### Key Insights Tab — Business Narrative & Analytics
+
+![Key Insights — 6 insight cards with business recommendations, Revenue Concentration Pareto chart, Profit Margin Heatmap by Category & Region](docs/screenshots/08-key-insights.jpg)
 
 ---
 
@@ -134,7 +97,8 @@ The dashboard's **Scenario tab** runs live JavaScript calculations as you drag s
 techmart-dashboard-2025/
 ├── index.html                   # ✅ GitHub Pages root (full dashboard)
 ├── docs/
-│   └── index.html               # Mirror copy for /docs Pages config
+│   ├── index.html               # Mirror copy for /docs Pages config
+│   └── screenshots/             # Dashboard screenshots (8 images)
 ├── pipeline/
 │   ├── __init__.py
 │   └── fetch_data.py            # Automated pipeline (see setup below)
