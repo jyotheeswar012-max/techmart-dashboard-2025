@@ -1,6 +1,6 @@
-pandas>=2.0
-plotly>=5.0
-requests>=2.28
-yfinance>=0.2
-pytest>=7.0
-pytest-cov>=4.0
+pandas>=2.2.0
+yfinance>=0.2.38
+requests>=2.31.0
+openpyxl>=3.1.0
+pytest>=8.0.0
+pytest-cov>=5.0.0
