@@ -2,91 +2,530 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="TechMart Inc. Business Analytics Dashboard 2025 — interactive retail analytics built by Jyotheeswar Reddy">
 <title>TechMart Inc. — Business Analytics Dashboard 2025</title>
+
+<!-- Google Fonts: Inter (body) + Sora (display headings) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" crossorigin="anonymous"></script>
+
 <style>
-:root{
-  --bg:#f4f6f9;--surface:#fff;--border:#e3e6ed;
-  --blue:#1A73E8;--green:#34A853;--red:#EA4335;--yellow:#FBBC04;--teal:#01696f;
-  --text:#1f2937;--muted:#6b7280;
-  --shadow:0 2px 12px rgba(0,0,0,.07);
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  /* Palette */
+  --bg:             #f0f2f7;
+  --bg-deep:        #e8eaf2;
+  --surface:        #ffffff;
+  --surface-2:      #f8f9fc;
+  --border:         #e2e5ef;
+  --border-light:   #eceef5;
+
+  /* Brand */
+  --blue:           #1A73E8;
+  --blue-dark:      #1558b0;
+  --blue-light:     #e8f0fd;
+  --green:          #1e8c44;
+  --green-light:    #e6f4ea;
+  --red:            #d32f2f;
+  --red-light:      #fce8e6;
+  --yellow:         #f59e0b;
+  --yellow-light:   #fef9c3;
+  --teal:           #00796b;
+  --teal-light:     #e0f2f1;
+  --purple:         #6d28d9;
+
+  /* Text */
+  --text:           #1a1f36;
+  --text-2:         #374151;
+  --muted:          #6b7280;
+  --faint:          #9ca3af;
+
+  /* Shadows — layered for depth */
+  --shadow-sm:      0 1px 3px rgba(26,31,54,.06), 0 1px 2px rgba(26,31,54,.04);
+  --shadow-md:      0 4px 16px rgba(26,31,54,.08), 0 2px 6px rgba(26,31,54,.05);
+  --shadow-lg:      0 12px 40px rgba(26,31,54,.12), 0 4px 12px rgba(26,31,54,.07);
+  --shadow-card:    0 2px 8px rgba(26,31,54,.07), 0 0 0 1px rgba(26,31,54,.04);
+  --shadow-hover:   0 8px 28px rgba(26,31,54,.13), 0 0 0 1px rgba(26,31,54,.05);
+  --shadow-kpi:     0 4px 20px rgba(26,115,232,.10), 0 1px 4px rgba(26,31,54,.06);
+
+  /* Radius */
+  --r-sm:  8px;
+  --r-md:  12px;
+  --r-lg:  16px;
+  --r-xl:  20px;
+
+  /* Fonts */
+  --font-display: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-body:    'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  /* Transitions */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);font-size:14px}
 
-/* ── HEADER ── */
-.header{background:linear-gradient(135deg,#0f2942 0%,#1A73E8 60%,#01696f 100%);color:#fff;padding:28px 32px 22px;text-align:center}
-.header h1{font-size:1.75em;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
-.header .sub{opacity:.85;font-size:.92em;margin-bottom:10px}
-.header .author{opacity:.7;font-size:.8em}
-.header .author a{color:#7dd3fc;text-decoration:none}
-.badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);padding:3px 12px;border-radius:20px;font-size:.75em;margin-left:8px}
-.data-note{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 16px;display:inline-block;margin-top:10px;font-size:.78em;opacity:.9;letter-spacing:.01em}
+/* ═══════════════════════════════════════════
+   BASE RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  background: var(--bg);
+  font-family: var(--font-body);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img, svg { display: block; max-width: 100%; }
+button { cursor: pointer; font-family: inherit; }
+a { transition: color .18s var(--ease); }
 
-/* ── KPI STRIP ── */
-.kpi-strip{display:flex;flex-wrap:wrap;gap:12px;padding:20px 24px;justify-content:center}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 22px;text-align:center;box-shadow:var(--shadow);min-width:120px;flex:1;max-width:160px}
-.kpi h2{font-size:1.55em;font-weight:700;color:var(--blue);line-height:1}
-.kpi p{color:var(--muted);font-size:.78em;margin-top:4px}
-.kpi.green h2{color:var(--green)}
-.kpi.teal h2{color:var(--teal)}
-.kpi.red h2{color:var(--red)}
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.header {
+  background: linear-gradient(135deg, #0c1e3c 0%, #1A73E8 55%, #00796b 100%);
+  color: #fff;
+  padding: 32px 40px 26px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+/* subtle grain overlay */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+.header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  position: relative;
+  text-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.header .sub {
+  opacity: .88;
+  font-size: clamp(.8rem, 1.8vw, .95rem);
+  margin-bottom: 10px;
+  position: relative;
+  font-weight: 400;
+}
+.header .author {
+  opacity: .72;
+  font-size: .8rem;
+  position: relative;
+}
+.header .author a { color: #93c5fd; text-decoration: none; }
+.header .author a:hover { color: #bfdbfe; }
+.badge {
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.32);
+  padding: 3px 14px;
+  border-radius: 20px;
+  font-size: .72rem;
+  margin-left: 8px;
+  letter-spacing: .04em;
+}
+.data-note {
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: var(--r-sm);
+  padding: 7px 18px;
+  display: inline-block;
+  margin-top: 12px;
+  font-size: .77rem;
+  opacity: .92;
+  letter-spacing: .01em;
+  position: relative;
+  backdrop-filter: blur(4px);
+}
 
-/* ── TABS ── */
-.tab-bar{display:flex;gap:0;background:var(--surface);border-bottom:2px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:99;box-shadow:0 2px 6px rgba(0,0,0,.06)}
-.tab-btn{padding:13px 22px;font-size:.88em;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .18s;white-space:nowrap}
-.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
-.tab-btn:hover:not(.active){color:var(--text);background:#f0f4ff}
+/* ═══════════════════════════════════════════
+   KPI STRIP
+═══════════════════════════════════════════ */
+.kpi-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 22px 28px;
+  justify-content: center;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-lg);
+  padding: 16px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-kpi);
+  min-width: 120px;
+  flex: 1;
+  max-width: 165px;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+.kpi h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.kpi p {
+  color: var(--muted);
+  font-size: .74rem;
+  margin-top: 5px;
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+.kpi.green h2 { color: var(--green); }
+.kpi.teal  h2 { color: var(--teal); }
+.kpi.red   h2 { color: var(--red); }
 
-/* ── TAB PANELS ── */
-.tab-panel{display:none;padding:20px 24px}
-.tab-panel.active{display:block}
+/* ═══════════════════════════════════════════
+   TAB BAR
+═══════════════════════════════════════════ */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  box-shadow: var(--shadow-md);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 14px 22px;
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all .18s var(--ease);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  letter-spacing: .01em;
+}
+.tab-btn.active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+.tab-btn:hover:not(.active) {
+  color: var(--text);
+  background: var(--blue-light);
+}
 
-/* ── CHART GRID ── */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-.grid-1{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
-.card-title{font-size:.85em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+/* ═══════════════════════════════════════════
+   TAB PANELS
+═══════════════════════════════════════════ */
+.tab-panel { display: none; padding: 24px 28px; }
+.tab-panel.active { display: block; }
 
-/* ── SCENARIO TAB ── */
-.scenario-hero{background:linear-gradient(135deg,#0f2942,#1A73E8);color:#fff;border-radius:14px;padding:28px 32px;margin-bottom:20px}
-.scenario-hero h2{font-size:1.3em;margin-bottom:8px}
-.scenario-hero p{opacity:.85;font-size:.9em;line-height:1.6}
-.scenario-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:20px}
-.ctrl-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
-.ctrl-card label{display:block;font-weight:600;font-size:.85em;margin-bottom:8px;color:var(--text)}
-.ctrl-card input[type=range]{width:100%;accent-color:var(--blue);margin:6px 0}
-.ctrl-card .val{font-size:1.3em;font-weight:700;color:var(--blue);text-align:center;margin-top:4px}
-.ctrl-card .desc{font-size:.78em;color:var(--muted);margin-top:4px;text-align:center}
-.scenario-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
-.result-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;box-shadow:var(--shadow)}
-.result-card h3{font-size:.8em;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
-.result-card .big{font-size:1.6em;font-weight:700}
-.result-card.pos .big{color:var(--green)}
-.result-card.neg .big{color:var(--red)}
-.result-card.blue .big{color:var(--blue)}
-.result-card.teal .big{color:var(--teal)}
-.result-card .delta{font-size:.8em;margin-top:4px;font-weight:600}
-.delta-pos{color:var(--green)} .delta-neg{color:var(--red)}
-.insight-box{background:#f0f9f0;border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:16px;font-size:.88em;line-height:1.7;color:#1f4f1f}
-.insight-box.warn{background:#fff8f0;border-color:#f59e0b;color:#7c4a00}
-.insight-box.info{background:#eff6ff;border-color:var(--blue);color:#1e3a5f}
+/* ═══════════════════════════════════════════
+   CHART GRID
+═══════════════════════════════════════════ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.grid-1 { display: grid; grid-template-columns: 1fr; gap: 18px; margin-bottom: 18px; }
 
-/* ── INSIGHT SECTION ── */
-.insight-section{background:linear-gradient(135deg,#f0f9f0,#e8f5e9);border:1px solid #c8e6c9;border-radius:14px;padding:24px 28px;margin-bottom:16px}
-.insight-section h3{color:#2e7d32;font-size:1em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.insight-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.insight-list li{display:flex;align-items:flex-start;gap:10px;font-size:.88em;line-height:1.6;color:#1f4f1f}
-.insight-list li::before{content:'💡';flex-shrink:0;margin-top:1px}
+/* CARD — elevated surface with layered shadow */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-lg);
+  padding: 18px 20px 14px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow .22s var(--ease), transform .22s var(--ease);
+}
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+.card-title {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
 
-/* ── RESPONSIVE ── */
-@media(max-width:768px){
-  .grid-2,.grid-3{grid-template-columns:1fr}
-  .kpi{max-width:46%}
-  .tab-btn{padding:11px 13px;font-size:.8em}
-  .header h1{font-size:1.3em}
+/* ═══════════════════════════════════════════
+   SCENARIO TAB
+═══════════════════════════════════════════ */
+.scenario-hero {
+  background: linear-gradient(135deg, #0c1e3c, #1A73E8);
+  color: #fff;
+  border-radius: var(--r-xl);
+  padding: 30px 36px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-lg);
+}
+.scenario-hero h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.scenario-hero p { opacity: .88; font-size: .9rem; line-height: 1.65; }
+
+.scenario-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.ctrl-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-md);
+  padding: 22px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow .2s var(--ease);
+}
+.ctrl-card:hover { box-shadow: var(--shadow-md); }
+.ctrl-card label {
+  display: block;
+  font-weight: 600;
+  font-size: .84rem;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.ctrl-card input[type=range] {
+  width: 100%;
+  accent-color: var(--blue);
+  margin: 6px 0;
+  height: 4px;
+}
+.ctrl-card .val {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--blue);
+  text-align: center;
+  margin-top: 6px;
+}
+.ctrl-card .desc { font-size: .76rem; color: var(--muted); margin-top: 4px; text-align: center; }
+
+.scenario-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-md);
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow .2s var(--ease), transform .2s var(--ease);
+}
+.result-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.result-card h3 {
+  font-size: .74rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.result-card .big {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.result-card.pos  .big { color: var(--green); }
+.result-card.neg  .big { color: var(--red); }
+.result-card.blue .big { color: var(--blue); }
+.result-card.teal .big { color: var(--teal); }
+.result-card .delta { font-size: .78rem; margin-top: 5px; font-weight: 600; }
+.delta-pos { color: var(--green); }
+.delta-neg { color: var(--red); }
+
+/* ═══════════════════════════════════════════
+   INSIGHT BOXES
+═══════════════════════════════════════════ */
+.insight-box {
+  background: var(--green-light);
+  border-left: 4px solid var(--green);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding: 16px 22px;
+  margin-bottom: 18px;
+  font-size: .88rem;
+  line-height: 1.72;
+  color: #134723;
+  box-shadow: var(--shadow-sm);
+}
+.insight-box.warn {
+  background: var(--yellow-light);
+  border-color: var(--yellow);
+  color: #7c4a00;
+}
+.insight-box.info {
+  background: var(--blue-light);
+  border-color: var(--blue);
+  color: #1e3a5f;
+}
+
+/* ═══════════════════════════════════════════
+   INSIGHT SECTION
+═══════════════════════════════════════════ */
+.insight-section {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 1px solid #bbf7d0;
+  border-radius: var(--r-xl);
+  padding: 28px 32px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-sm);
+}
+.insight-section h3 {
+  font-family: var(--font-display);
+  color: #166534;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.insight-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.insight-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: .88rem;
+  line-height: 1.7;
+  color: #14532d;
+  background: rgba(255,255,255,.55);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  border: 1px solid rgba(187,247,208,.7);
+}
+.insight-list li::before { content: '💡'; flex-shrink: 0; margin-top: 1px; }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .78rem;
+  padding: 22px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  margin-top: 28px;
+  line-height: 1.9;
+}
+.footer a { color: var(--blue); text-decoration: none; }
+.footer a:hover { color: var(--blue-dark); text-decoration: underline; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤ 900px)
+═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .header { padding: 24px 24px 20px; }
+  .kpi-strip { padding: 18px 16px; gap: 10px; }
+  .kpi { max-width: 48%; min-width: 100px; padding: 13px 16px; }
+  .kpi h2 { font-size: 1.35rem; }
+  .tab-panel { padding: 18px 16px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tab-btn { padding: 12px 16px; font-size: .83rem; }
+  .insight-section { padding: 22px 20px; }
+  .scenario-hero { padding: 24px 24px; }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 640px)
+═══════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .header { padding: 20px 16px 18px; }
+  .header h1 { font-size: 1.2rem; }
+  .header .sub { font-size: .8rem; }
+  .badge { display: none; }
+  .kpi-strip { padding: 14px 12px; gap: 8px; }
+  .kpi { max-width: 47%; min-width: 90px; padding: 12px 10px; }
+  .kpi h2 { font-size: 1.2rem; }
+  .kpi p { font-size: .68rem; }
+  .tab-bar { padding: 0 8px; }
+  .tab-btn { padding: 11px 12px; font-size: .78rem; }
+  .tab-panel { padding: 14px 12px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 12px; }
+  .card { padding: 14px 14px 10px; border-radius: var(--r-md); }
+  .scenario-hero { padding: 18px 16px; border-radius: var(--r-lg); }
+  .scenario-hero h2 { font-size: 1.1rem; }
+  .ctrl-card { padding: 16px; }
+  .result-card .big { font-size: 1.45rem; }
+  .insight-section { padding: 18px 16px; border-radius: var(--r-lg); }
+  .insight-list li { padding: 10px 12px; font-size: .84rem; }
+  .footer { padding: 16px 14px; font-size: .74rem; }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — SMALL MOBILE (≤ 390px)
+═══════════════════════════════════════════ */
+@media (max-width: 390px) {
+  .kpi { max-width: 100%; }
+  .scenario-controls { grid-template-columns: 1fr; }
+  .scenario-results { grid-template-columns: 1fr 1fr; }
+}
+
+/* ═══════════════════════════════════════════
+   PRINT
+═══════════════════════════════════════════ */
+@media print {
+  .tab-bar { position: static; }
+  .tab-panel { display: block !important; }
+  .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  .header { background: #1A73E8 !important; -webkit-print-color-adjust: exact; }
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 </style>
 </head>
@@ -97,8 +536,8 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
   <h1>🛍️ TechMart Inc. — Business Analytics Dashboard 2025</h1>
   <p class="sub">Interactive analytics · 365 days · Jan–Dec 2025 · 16+ charts · Scenario Analysis Engine</p>
   <p class="author">Built &amp; deployed by <strong>Jyotheeswar Reddy</strong> · Manipal University Jaipur ·
-    <a href="https://github.com/jyotheeswar012-max" target="_blank">@jyotheeswar012-max</a> ·
-    <a href="https://www.linkedin.com/in/a-jyotheeswar-reddy/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/jyotheeswar012-max" target="_blank" rel="noopener">@jyotheeswar012-max</a> ·
+    <a href="https://www.linkedin.com/in/a-jyotheeswar-reddy/" target="_blank" rel="noopener">LinkedIn</a>
   </p>
   <div class="data-note">📌 Data source: 2025 TechMart sales (static dataset) · Last analyzed: June 2026</div>
 </div>
@@ -127,14 +566,14 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
 
 <!-- TAB 1: OVERVIEW -->
 <div id="tab-overview" class="tab-panel active">
-  <div class="grid-1"><div class="card"><div class="card-title">📅 Monthly Sales &amp; Profit (Jan–Dec 2025)</div><div id="c-monthly" style="height:380px"></div></div></div>
+  <div class="grid-1"><div class="card"><div class="card-title">📅 Monthly Sales &amp; Profit — Jan to Dec 2025</div><div id="c-monthly" style="height:380px"></div></div></div>
   <div class="grid-2">
     <div class="card"><div class="card-title">📈 Month-over-Month Revenue Growth %</div><div id="c-mom" style="height:300px"></div></div>
-    <div class="card"><div class="card-title">🗓️ Quarterly Performance</div><div id="c-quarterly" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">🗓️ Quarterly Revenue &amp; Profit Performance</div><div id="c-quarterly" style="height:300px"></div></div>
   </div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">🌏 Revenue by Region</div><div id="c-region" style="height:300px"></div></div>
-    <div class="card"><div class="card-title">👤 Customer Segment Split</div><div id="c-segment" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">🌏 Revenue by US Region</div><div id="c-region" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">👤 Revenue by Customer Segment</div><div id="c-segment" style="height:300px"></div></div>
   </div>
 </div>
 
@@ -146,8 +585,8 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
   </div>
   <div class="grid-1"><div class="card"><div class="card-title">🏆 Top 10 Products by Revenue</div><div id="c-top10" style="height:340px"></div></div></div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">🏷️ Discount Bracket → Sales &amp; Margin Impact</div><div id="c-discount" style="height:320px"></div></div>
-    <div class="card"><div class="card-title">📊 Category Revenue Share (Treemap)</div><div id="c-treemap" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">🏷️ Discount Bracket → Sales &amp; Net Margin Impact</div><div id="c-discount" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">📊 Category Revenue Share — Treemap</div><div id="c-treemap" style="height:320px"></div></div>
   </div>
 </div>
 
@@ -155,23 +594,23 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
 <div id="tab-customers" class="tab-panel">
   <div class="grid-2">
     <div class="card"><div class="card-title">🎂 Revenue &amp; Profit by Age Group</div><div id="c-age" style="height:320px"></div></div>
-    <div class="card"><div class="card-title">💳 Payment Method Usage</div><div id="c-payment" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">💳 Revenue by Payment Method</div><div id="c-payment" style="height:320px"></div></div>
   </div>
   <div class="grid-2">
     <div class="card"><div class="card-title">🔄 Customer Loyalty Tier Distribution</div><div id="c-loyalty" style="height:320px"></div></div>
-    <div class="card"><div class="card-title">📡 Segment Revenue vs Profit (Bubble)</div><div id="c-seg-bubble" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">📡 Segment Revenue vs Profit — Bubble Chart</div><div id="c-seg-bubble" style="height:320px"></div></div>
   </div>
 </div>
 
 <!-- TAB 4: OPERATIONS -->
 <div id="tab-operations" class="tab-panel">
   <div class="grid-2">
-    <div class="card"><div class="card-title">📅 Sales by Day of Week</div><div id="c-weekday" style="height:300px"></div></div>
-    <div class="card"><div class="card-title">📦 Shipping Mode Analysis</div><div id="c-shipping" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">📅 Revenue by Day of Week</div><div id="c-weekday" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">📦 Revenue by Shipping Mode</div><div id="c-shipping" style="height:300px"></div></div>
   </div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">🗺️ Revenue by Region (Donut)</div><div id="c-region-donut" style="height:300px"></div></div>
-    <div class="card"><div class="card-title">📈 Cumulative Revenue (YTD)</div><div id="c-ytd" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">🗺️ Regional Revenue Share — Donut</div><div id="c-region-donut" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">📈 Cumulative YTD Revenue vs Linear Target</div><div id="c-ytd" style="height:300px"></div></div>
   </div>
 </div>
 
@@ -195,8 +634,8 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
     <div class="result-card blue"><h3>Est. Add. Transactions</h3><div class="big" id="r-txns">—</div><div class="delta" id="r-txns-delta">—</div></div>
   </div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">📊 Scenario vs Baseline</div><div id="c-scenario-bar" style="height:320px"></div></div>
-    <div class="card"><div class="card-title">📈 Sensitivity: Growth Rate vs Profit</div><div id="c-sensitivity" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">📊 Scenario vs Baseline — Revenue &amp; Profit</div><div id="c-scenario-bar" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">📈 Sensitivity Analysis — Growth Rate vs Projected Profit</div><div id="c-sensitivity" style="height:320px"></div></div>
   </div>
   <div class="insight-box warn">⚠️ <strong>Discount Insight:</strong> Every 5% increase in avg discount rate compresses net profit margin by ~2.8pp. Discounts &gt;20% result in negative margins on low-ticket items.</div>
 </div>
@@ -215,21 +654,22 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
     </ul>
   </div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">📊 Revenue Concentration (Pareto)</div><div id="c-pareto" style="height:320px"></div></div>
-    <div class="card"><div class="card-title">🔥 Profit Margin Heatmap by Category &amp; Region</div><div id="c-heatmap" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">📊 Revenue Concentration — Pareto Analysis</div><div id="c-pareto" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">🔥 Profit Margin % Heatmap — Category × Region</div><div id="c-heatmap" style="height:320px"></div></div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<div style="text-align:center;color:var(--muted);font-size:.78em;padding:20px;border-top:1px solid var(--border);background:var(--surface);margin-top:24px">
+<div class="footer">
   📊 Built by <strong>Jyotheeswar Reddy</strong> · Manipal University Jaipur · 2025 &nbsp;|&nbsp;
-  <a href="https://github.com/jyotheeswar012-max/techmart-dashboard-2025" target="_blank" style="color:var(--blue)">GitHub Repo</a> &nbsp;|&nbsp;
-  <a href="https://www.linkedin.com/in/a-jyotheeswar-reddy/" target="_blank" style="color:var(--blue)">LinkedIn</a> &nbsp;|&nbsp;
-  <a href="mailto:jyotheeswar0802@gmail.com" style="color:var(--blue)">jyotheeswar0802@gmail.com</a>
-  <br><span style="margin-top:6px;display:inline-block">📌 Static 2025 dataset · Last analyzed: June 2026</span>
+  <a href="https://github.com/jyotheeswar012-max/techmart-dashboard-2025" target="_blank" rel="noopener">GitHub Repo</a> &nbsp;|&nbsp;
+  <a href="https://www.linkedin.com/in/a-jyotheeswar-reddy/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;|&nbsp;
+  <a href="mailto:jyotheeswar0802@gmail.com">jyotheeswar0802@gmail.com</a>
+  <br><span>📌 Static 2025 dataset · No live data · Last analyzed: June 2026</span>
 </div>
 
 <script>
+/* ─── DATA ─────────────────────────────────────── */
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const SALES=[321024,298065,378118,423234,440066,374489,444692,420056,464725,485347,588165,673318];
 const PROFIT=[102883,98061,117066,137537,138114,115645,143829,133138,148015,150089,181930,211755];
@@ -237,10 +677,69 @@ const CATS=['Electronics','Home & Kitchen','Clothing','Beauty','Sports','Books',
 const CAT_S=[2957099,1159585,577843,312011,224504,42897,37359];
 const CAT_P=[836370,374542,225716,129642,77991,21361,12441];
 const CAT_M=CAT_P.map((p,i)=>+(p/CAT_S[i]*100).toFixed(1));
-const CFG={responsive:true};
-const LAY_BASE={paper_bgcolor:'#fff',plot_bgcolor:'#fff',margin:{t:30,b:50,l:50,r:20},font:{family:'Segoe UI,system-ui,sans-serif',size:12},legend:{orientation:'h',y:-0.22}};
-function lay(extra={}){return Object.assign({},LAY_BASE,extra);}
 
+/* ─── PLOTLY THEME ──────────────────────────────
+   Consistent color palette, fonts, axis styling
+   applied to every chart via lay() helper.
+─────────────────────────────────────────────── */
+const COLORS={
+  blue:'#1A73E8', green:'#1e8c44', red:'#d32f2f',
+  yellow:'#f59e0b', teal:'#00796b', purple:'#6d28d9',
+  palette:['#1A73E8','#1e8c44','#f59e0b','#d32f2f','#00796b','#6d28d9','#f97316']
+};
+
+const FONT_FAMILY="'Inter','Segoe UI',system-ui,sans-serif";
+
+const LAY_BASE={
+  paper_bgcolor:'#ffffff',
+  plot_bgcolor:'#ffffff',
+  margin:{t:36,b:56,l:58,r:24},
+  font:{family:FONT_FAMILY, size:12, color:'#374151'},
+  legend:{
+    orientation:'h', y:-0.28, x:0.5, xanchor:'center',
+    font:{size:11}, bgcolor:'rgba(255,255,255,0)', borderwidth:0
+  },
+  xaxis:{
+    showgrid:false,
+    zeroline:false,
+    linecolor:'#e2e5ef',
+    tickfont:{size:11,color:'#6b7280'},
+    title:{font:{size:12,color:'#374151'}}
+  },
+  yaxis:{
+    gridcolor:'#f0f2f7',
+    gridwidth:1,
+    zeroline:false,
+    linecolor:'#e2e5ef',
+    tickfont:{size:11,color:'#6b7280'},
+    title:{font:{size:12,color:'#374151'}}
+  },
+  colorway: COLORS.palette,
+  hoverlabel:{
+    bgcolor:'#1a1f36',
+    font:{family:FONT_FAMILY,size:12,color:'#fff'},
+    bordercolor:'transparent',
+    borderwidth:0
+  },
+  hovermode:'x unified',
+  modebar:{bgcolor:'transparent',color:'#9ca3af',activecolor:'#1A73E8'}
+};
+
+const CFG={responsive:true,displaylogo:false,modeBarButtonsToRemove:['lasso2d','select2d','toImage']};
+
+function lay(extra={}){
+  const merged=JSON.parse(JSON.stringify(LAY_BASE));
+  function deepMerge(a,b){
+    Object.keys(b).forEach(k=>{
+      if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object')deepMerge(a[k],b[k]);
+      else a[k]=b[k];
+    });
+  }
+  deepMerge(merged,extra);
+  return merged;
+}
+
+/* ─── TAB SWITCHER ──────────────────────────────── */
 const rendered=new Set();
 function switchTab(id,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
@@ -250,54 +749,281 @@ function switchTab(id,btn){
   if(!rendered.has(id)){renderTab(id);rendered.add(id);}
 }
 
+/* ─── OVERVIEW CHARTS (rendered on load) ───────── */
 rendered.add('overview');
-Plotly.newPlot('c-monthly',[{type:'bar',name:'Profit',x:MONTHS,y:PROFIT,marker:{color:'#34A853'},opacity:.75},{type:'scatter',mode:'lines+markers',name:'Revenue',x:MONTHS,y:SALES,line:{color:'#1A73E8',width:3},marker:{size:7}}],lay({yaxis:{title:'Amount (USD)',tickprefix:'$',tickformat:',.0f'},xaxis:{title:'Month'}}),CFG);
-const momV=SALES.slice(1).map((s,i)=>+((s-SALES[i])/SALES[i]*100).toFixed(2));
-Plotly.newPlot('c-mom',[{type:'bar',x:MONTHS.slice(1),y:momV,marker:{color:momV.map(v=>v>=0?'#34A853':'#EA4335')},text:momV.map(v=>(v>0?'+':'')+v+'%'),textposition:'outside'}],lay({yaxis:{title:'Growth %'},xaxis:{title:'Month'},shapes:[{type:'line',x0:-0.5,x1:10.5,y0:0,y1:0,line:{color:'#ccc',width:1}}]}),CFG);
-Plotly.newPlot('c-quarterly',[{type:'bar',name:'Revenue',x:['Q1','Q2','Q3','Q4'],y:[997207,1237789,1329473,1746831],marker:{color:'#1A73E8'},opacity:.85},{type:'bar',name:'Profit',x:['Q1','Q2','Q3','Q4'],y:[318010,391296,424982,543775],marker:{color:'#34A853'},opacity:.85}],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
-Plotly.newPlot('c-region',[{type:'bar',orientation:'h',x:[1488909,1732679,948136,1141575],y:['West','East','South','Central'],marker:{color:['#1A73E8','#34A853','#FBBC04','#EA4335']},text:['$1.49M','$1.73M','$0.95M','$1.14M'],textposition:'outside'}],lay({xaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},margin:{t:30,b:50,l:70,r:60}}),CFG);
-Plotly.newPlot('c-segment',[{type:'pie',hole:.45,labels:['Consumer','Corporate','Home Office'],values:[2798568,1552865,959866],marker:{colors:['#1A73E8','#34A853','#FBBC04']},textinfo:'label+percent+value',hovertemplate:'%{label}<br>$%{value:,.0f}<br>%{percent}<extra></extra>'}],lay({margin:{t:20,b:20,l:20,r:20}}),CFG);
 
+Plotly.newPlot('c-monthly',[
+  {type:'bar',name:'Profit ($)',x:MONTHS,y:PROFIT,
+   marker:{color:COLORS.green,opacity:.8},
+   hovertemplate:'<b>%{x}</b><br>Profit: $%{y:,.0f}<extra></extra>'},
+  {type:'scatter',mode:'lines+markers',name:'Revenue ($)',x:MONTHS,y:SALES,
+   line:{color:COLORS.blue,width:3},marker:{size:7,color:COLORS.blue},
+   hovertemplate:'<b>%{x}</b><br>Revenue: $%{y:,.0f}<extra></extra>'}
+],lay({
+  title:{text:'Monthly Revenue &amp; Profit — 2025',font:{family:"'Sora',sans-serif",size:14,color:'#1a1f36'},x:0.02,xanchor:'left'},
+  yaxis:{title:{text:'Amount (USD)'},tickprefix:'$',tickformat:',.0f'},
+  xaxis:{title:{text:'Month 2025'}}
+}),CFG);
+
+const momV=SALES.slice(1).map((s,i)=>+((s-SALES[i])/SALES[i]*100).toFixed(2));
+Plotly.newPlot('c-mom',[
+  {type:'bar',x:MONTHS.slice(1),y:momV,
+   marker:{color:momV.map(v=>v>=0?COLORS.green:COLORS.red)},
+   text:momV.map(v=>(v>0?'+':'')+v+'%'),textposition:'outside',
+   hovertemplate:'%{x}: <b>%{y:+.2f}%</b><extra></extra>'}
+],lay({
+  title:{text:'Month-over-Month Revenue Growth',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+  yaxis:{title:{text:'Growth (%)'},ticksuffix:'%'},
+  xaxis:{title:{text:'Month'}},
+  shapes:[{type:'line',x0:-0.5,x1:10.5,y0:0,y1:0,line:{color:'#cbd5e1',width:1.5}}]
+}),CFG);
+
+Plotly.newPlot('c-quarterly',[
+  {type:'bar',name:'Revenue',x:['Q1','Q2','Q3','Q4'],
+   y:[997207,1237789,1329473,1746831],
+   marker:{color:COLORS.blue,opacity:.85},
+   hovertemplate:'%{x} Revenue: <b>$%{y:,.0f}</b><extra></extra>'},
+  {type:'bar',name:'Profit',x:['Q1','Q2','Q3','Q4'],
+   y:[318010,391296,424982,543775],
+   marker:{color:COLORS.green,opacity:.85},
+   hovertemplate:'%{x} Profit: <b>$%{y:,.0f}</b><extra></extra>'}
+],lay({
+  title:{text:'Quarterly Performance',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+  barmode:'group',
+  yaxis:{title:{text:'Amount (USD)'},tickprefix:'$',tickformat:',.0f'},
+  xaxis:{title:{text:'Quarter'}}
+}),CFG);
+
+Plotly.newPlot('c-region',[
+  {type:'bar',orientation:'h',
+   x:[1488909,1732679,948136,1141575],
+   y:['West','East','South','Central'],
+   marker:{color:[COLORS.blue,COLORS.green,COLORS.yellow,COLORS.red]},
+   text:['$1.49M','$1.73M','$0.95M','$1.14M'],textposition:'outside',
+   hovertemplate:'%{y}: <b>$%{x:,.0f}</b><extra></extra>'}
+],lay({
+  title:{text:'Revenue by US Region',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+  xaxis:{title:{text:'Revenue (USD)'},tickprefix:'$',tickformat:',.0f'},
+  yaxis:{title:{text:''}},
+  margin:{t:36,b:56,l:72,r:64}
+}),CFG);
+
+Plotly.newPlot('c-segment',[
+  {type:'pie',hole:.45,labels:['Consumer','Corporate','Home Office'],
+   values:[2798568,1552865,959866],
+   marker:{colors:[COLORS.blue,COLORS.green,COLORS.yellow]},
+   textinfo:'label+percent',
+   hovertemplate:'<b>%{label}</b><br>Revenue: $%{value:,.0f}<br>Share: %{percent}<extra></extra>',
+   pull:[0.02,0,0]}
+],lay({
+  title:{text:'Customer Segment Revenue Split',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.5,xanchor:'center'},
+  margin:{t:44,b:24,l:20,r:20}
+}),CFG);
+
+/* ─── LAZY TABS ──────────────────────────────────── */
 function renderTab(id){
-  if(id==='products')renderProducts();
-  if(id==='customers')renderCustomers();
+  if(id==='products')  renderProducts();
+  if(id==='customers') renderCustomers();
   if(id==='operations')renderOperations();
-  if(id==='scenario'){runScenario();renderSensitivity();}
-  if(id==='insights')renderInsights();
+  if(id==='scenario')  {runScenario();renderSensitivity();}
+  if(id==='insights')  renderInsights();
 }
 
+/* ─── PRODUCTS ─────────────────────────────────── */
 function renderProducts(){
-  Plotly.newPlot('c-cat-bar',[{type:'bar',name:'Revenue',x:CATS,y:CAT_S,marker:{color:'#1A73E8'},opacity:.85},{type:'bar',name:'Profit',x:CATS,y:CAT_P,marker:{color:'#34A853'},opacity:.85}],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f'},xaxis:{tickangle:-20}}),CFG);
-  Plotly.newPlot('c-margins',[{type:'bar',x:CATS,y:CAT_M,marker:{color:CAT_M.map(m=>m>30?'#34A853':m>25?'#FBBC04':'#EA4335')},text:CAT_M.map(m=>m+'%'),textposition:'outside'}],lay({yaxis:{title:'Profit Margin %',range:[0,42]},xaxis:{tickangle:-20},shapes:[{type:'line',x0:-.5,x1:6.5,y0:31.7,y1:31.7,line:{color:'#1A73E8',width:2,dash:'dot'}}],annotations:[{x:6,y:31.7,text:'Avg 31.7%',showarrow:false,yshift:8,font:{color:'#1A73E8',size:11}}]}),CFG);
+  Plotly.newPlot('c-cat-bar',[
+    {type:'bar',name:'Revenue',x:CATS,y:CAT_S,marker:{color:COLORS.blue,opacity:.85},
+     hovertemplate:'%{x}<br>Revenue: <b>$%{y:,.0f}</b><extra></extra>'},
+    {type:'bar',name:'Profit', x:CATS,y:CAT_P,marker:{color:COLORS.green,opacity:.85},
+     hovertemplate:'%{x}<br>Profit: <b>$%{y:,.0f}</b><extra></extra>'}
+  ],lay({
+    title:{text:'Category Revenue vs Profit',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    barmode:'group',
+    yaxis:{title:{text:'Amount (USD)'},tickprefix:'$',tickformat:',.0f'},
+    xaxis:{title:{text:'Category'},tickangle:-18}
+  }),CFG);
+
+  Plotly.newPlot('c-margins',[
+    {type:'bar',x:CATS,y:CAT_M,
+     marker:{color:CAT_M.map(m=>m>30?COLORS.green:m>25?COLORS.yellow:COLORS.red)},
+     text:CAT_M.map(m=>m+'%'),textposition:'outside',
+     hovertemplate:'%{x}<br>Margin: <b>%{y:.1f}%</b><extra></extra>'}
+  ],lay({
+    title:{text:'Profit Margin % by Category',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    yaxis:{title:{text:'Profit Margin (%)'},ticksuffix:'%',range:[0,55]},
+    xaxis:{title:{text:'Category'},tickangle:-18},
+    shapes:[{type:'line',x0:-.5,x1:6.5,y0:31.7,y1:31.7,line:{color:COLORS.blue,width:2,dash:'dot'}}],
+    annotations:[{x:6,y:31.7,text:'Avg 31.7%',showarrow:false,yshift:10,font:{color:COLORS.blue,size:11}}]
+  }),CFG);
+
   const p10=['Logitech MX Keys','Samsung Galaxy S24','Dell XPS 15','LG 27in 4K Monitor','Apple Watch S9','MacBook Air M3','Sony WH-1000XM5','iPhone 15 Pro','iPad Pro 12.9','Canon EOS R50'];
   const r10=[331513,309507,308310,303220,303076,288457,286111,281339,273075,272491];
-  Plotly.newPlot('c-top10',[{type:'bar',orientation:'h',x:r10,y:p10,marker:{color:'#1A73E8'},opacity:.88,text:r10.map(v=>'$'+v.toLocaleString()),textposition:'outside'}],lay({margin:{t:20,b:50,l:160,r:80},xaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
-  const db=['0%','1–5%','6–10%','11–15%','16–20%','21%+'];const ds=[1850000,1420000,1100000,620000,280000,87000];const dp=[620000,430000,290000,120000,35000,-18000];const dm=dp.map((p,i)=>+(p/ds[i]*100).toFixed(1));
-  Plotly.newPlot('c-discount',[{type:'bar',name:'Sales',x:db,y:ds,marker:{color:'#1A73E8'},opacity:.8,yaxis:'y'},{type:'scatter',mode:'lines+markers',name:'Net Margin %',x:db,y:dm,line:{color:'#EA4335',width:3},marker:{size:9,color:'#EA4335'},yaxis:'y2'}],lay({yaxis:{title:'Sales ($)',tickprefix:'$',tickformat:',.0f'},yaxis2:{title:'Net Margin %',overlaying:'y',side:'right',ticksuffix:'%',range:[-10,45]}}),CFG);
-  Plotly.newPlot('c-treemap',[{type:'treemap',labels:CATS.concat(['TechMart 2025']),parents:CATS.map(()=>'TechMart 2025').concat(['']),values:CAT_S.concat([CAT_S.reduce((a,b)=>a+b,0)]),textinfo:'label+value+percent parent',marker:{colorscale:'Blues'}}],{...lay({margin:{t:20,b:20,l:10,r:10}}),height:300},CFG);
+  Plotly.newPlot('c-top10',[
+    {type:'bar',orientation:'h',x:r10,y:p10,
+     marker:{color:COLORS.blue,opacity:.88},
+     text:r10.map(v=>'$'+v.toLocaleString()),textposition:'outside',
+     hovertemplate:'<b>%{y}</b><br>Revenue: $%{x:,.0f}<extra></extra>'}
+  ],lay({
+    title:{text:'Top 10 Products by Revenue',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    margin:{t:36,b:56,l:168,r:88},
+    xaxis:{title:{text:'Revenue (USD)'},tickprefix:'$',tickformat:',.0f'},
+    yaxis:{title:{text:''}}
+  }),CFG);
+
+  const db=['0%','1–5%','6–10%','11–15%','16–20%','21%+'];
+  const ds=[1850000,1420000,1100000,620000,280000,87000];
+  const dp=[620000,430000,290000,120000,35000,-18000];
+  const dm=dp.map((p,i)=>+(p/ds[i]*100).toFixed(1));
+  Plotly.newPlot('c-discount',[
+    {type:'bar',name:'Sales (USD)',x:db,y:ds,
+     marker:{color:COLORS.blue,opacity:.8},yaxis:'y',
+     hovertemplate:'Bracket %{x}<br>Sales: <b>$%{y:,.0f}</b><extra></extra>'},
+    {type:'scatter',mode:'lines+markers',name:'Net Margin %',x:db,y:dm,
+     line:{color:COLORS.red,width:3},marker:{size:9,color:COLORS.red},yaxis:'y2',
+     hovertemplate:'Bracket %{x}<br>Margin: <b>%{y:.1f}%</b><extra></extra>'}
+  ],lay({
+    title:{text:'Discount Bracket — Sales & Net Margin Impact',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    yaxis:{title:{text:'Sales (USD)'},tickprefix:'$',tickformat:',.0f'},
+    yaxis2:{title:{text:'Net Margin (%)'},overlaying:'y',side:'right',ticksuffix:'%',range:[-10,45]},
+    xaxis:{title:{text:'Discount Bracket'}}
+  }),CFG);
+
+  Plotly.newPlot('c-treemap',[
+    {type:'treemap',labels:CATS.concat(['TechMart 2025']),
+     parents:CATS.map(()=>'TechMart 2025').concat(['']),
+     values:CAT_S.concat([CAT_S.reduce((a,b)=>a+b,0)]),
+     textinfo:'label+value+percent parent',
+     texttemplate:'<b>%{label}</b><br>$%{value:,.0f}<br>%{percentParent:.1%}',
+     marker:{colorscale:[['0','#e8f0fd'],['0.5','#1A73E8'],['1','#0c1e3c']],showscale:false},
+     hovertemplate:'<b>%{label}</b><br>Revenue: $%{value:,.0f}<br>Share: %{percentParent:.1%}<extra></extra>'}
+  ],lay({margin:{t:20,b:10,l:8,r:8}}),CFG);
 }
 
+/* ─── CUSTOMERS ─────────────────────────────────── */
 function renderCustomers(){
-  const ages=['18–25','26–35','36–45','46–55','56+'];const ageS=[842511,1275900,1684663,1073065,435160];const ageP=[270903,403667,528921,332961,141611];
-  Plotly.newPlot('c-age',[{type:'bar',name:'Revenue',x:ages,y:ageS,marker:{color:'#1A73E8'},opacity:.85},{type:'bar',name:'Profit',x:ages,y:ageP,marker:{color:'#34A853'},opacity:.85}],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
-  Plotly.newPlot('c-payment',[{type:'bar',x:['Credit Card','Debit Card','PayPal','Apple Pay','Google Pay','Bank Transfer'],y:[1968295,1345498,984558,503135,347230,162583],marker:{color:['#1A73E8','#34A853','#FBBC04','#EA4335','#AB47BC','#00BCD4']},text:[1968295,1345498,984558,503135,347230,162583].map(v=>'$'+Math.round(v/1000)+'K'),textposition:'outside'}],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},xaxis:{tickangle:-20},margin:{t:30,b:80,l:60,r:20}}),CFG);
-  Plotly.newPlot('c-loyalty',[{type:'pie',hole:.45,labels:['Bronze','Silver','Gold','Platinum'],values:[40700,2119607,3083508,67484],marker:{colors:['#CD7F32','#C0C0C0','#FFD700','#E5E4E2']},textinfo:'label+percent',pull:[0,.05,.05,.1]}],lay({margin:{t:20,b:20,l:20,r:20}}),CFG);
-  Plotly.newPlot('c-seg-bubble',[{type:'scatter',mode:'markers+text',x:[2798568,1552865,959866],y:[880645,491601,305817],text:['Consumer','Corporate','Home Office'],textposition:'top center',marker:{size:[80,50,35],color:['#1A73E8','#34A853','#FBBC04'],opacity:.8}}],lay({xaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},yaxis:{title:'Profit ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
+  const ages=['18–25','26–35','36–45','46–55','56+'];
+  const ageS=[842511,1275900,1684663,1073065,435160];
+  const ageP=[270903,403667,528921,332961,141611];
+  Plotly.newPlot('c-age',[
+    {type:'bar',name:'Revenue',x:ages,y:ageS,marker:{color:COLORS.blue,opacity:.85},
+     hovertemplate:'Age %{x}<br>Revenue: <b>$%{y:,.0f}</b><extra></extra>'},
+    {type:'bar',name:'Profit', x:ages,y:ageP,marker:{color:COLORS.green,opacity:.85},
+     hovertemplate:'Age %{x}<br>Profit: <b>$%{y:,.0f}</b><extra></extra>'}
+  ],lay({
+    title:{text:'Revenue & Profit by Age Group',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    barmode:'group',
+    yaxis:{title:{text:'Amount (USD)'},tickprefix:'$',tickformat:',.0f'},
+    xaxis:{title:{text:'Age Group'}}
+  }),CFG);
+
+  const pmethods=['Credit Card','Debit Card','PayPal','Apple Pay','Google Pay','Bank Transfer'];
+  const pvals=[1968295,1345498,984558,503135,347230,162583];
+  Plotly.newPlot('c-payment',[
+    {type:'bar',x:pmethods,y:pvals,
+     marker:{color:COLORS.palette},
+     text:pvals.map(v=>'$'+Math.round(v/1000)+'K'),textposition:'outside',
+     hovertemplate:'%{x}<br>Revenue: <b>$%{y:,.0f}</b><extra></extra>'}
+  ],lay({
+    title:{text:'Revenue by Payment Method',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    yaxis:{title:{text:'Revenue (USD)'},tickprefix:'$',tickformat:',.0f',range:[0,2300000]},
+    xaxis:{title:{text:'Payment Method'},tickangle:-20},
+    margin:{t:36,b:80,l:60,r:20}
+  }),CFG);
+
+  Plotly.newPlot('c-loyalty',[
+    {type:'pie',hole:.48,
+     labels:['Bronze','Silver','Gold','Platinum'],
+     values:[40700,2119607,3083508,67484],
+     marker:{colors:['#CD7F32','#9ca3af','#f59e0b','#6d28d9']},
+     textinfo:'label+percent',
+     hovertemplate:'<b>%{label}</b><br>$%{value:,.0f}<br>%{percent}<extra></extra>',
+     pull:[0,.04,.04,.08]}
+  ],lay({
+    title:{text:'Customer Loyalty Tier — Revenue Distribution',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.5,xanchor:'center'},
+    margin:{t:44,b:24,l:20,r:20}
+  }),CFG);
+
+  Plotly.newPlot('c-seg-bubble',[
+    {type:'scatter',mode:'markers+text',
+     x:[2798568,1552865,959866],
+     y:[880645,491601,305817],
+     text:['Consumer','Corporate','Home Office'],
+     textposition:'top center',
+     textfont:{size:12,family:FONT_FAMILY},
+     marker:{size:[80,50,35],color:[COLORS.blue,COLORS.green,COLORS.yellow],opacity:.8,
+             line:{color:'#fff',width:2}},
+     hovertemplate:'<b>%{text}</b><br>Revenue: $%{x:,.0f}<br>Profit: $%{y:,.0f}<extra></extra>'}
+  ],lay({
+    title:{text:'Segment Revenue vs Profit — Bubble Size = Revenue',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    xaxis:{title:{text:'Revenue (USD)'},tickprefix:'$',tickformat:',.0f'},
+    yaxis:{title:{text:'Profit (USD)'},tickprefix:'$',tickformat:',.0f'}
+  }),CFG);
 }
 
+/* ─── OPERATIONS ────────────────────────────────── */
 function renderOperations(){
-  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];const dayS=[777382,706199,719783,735408,709383,850778,812366];
-  Plotly.newPlot('c-weekday',[{type:'bar',x:days,y:dayS,marker:{color:days.map((_,i)=>i>=5?'#34A853':'#1A73E8')},text:dayS.map(v=>'$'+Math.round(v/1000)+'K'),textposition:'outside'}],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f',range:[0,950000]},annotations:[{x:5,y:870000,text:'Weekend Peak',showarrow:false,font:{color:'#34A853',size:12}}]}),CFG);
-  Plotly.newPlot('c-shipping',[{type:'bar',x:['Standard','Second Class','First Class','Same Day'],y:[3195450,1016961,828353,270535],marker:{color:['#1A73E8','#34A853','#FBBC04','#EA4335']},text:['60.2%','19.1%','15.6%','5.1%'],textposition:'outside'}],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f',range:[0,3600000]}}),CFG);
-  Plotly.newPlot('c-region-donut',[{type:'pie',hole:.5,labels:['West','East','South','Central'],values:[1488909,1732679,948136,1141575],marker:{colors:['#1A73E8','#34A853','#FBBC04','#EA4335']},textinfo:'label+percent',pull:[0,.04,0,0]}],lay({margin:{t:20,b:20,l:20,r:20},annotations:[{text:'Regions',x:.5,y:.5,showarrow:false,font:{size:14,color:'#555'}}]}),CFG);
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dayS=[777382,706199,719783,735408,709383,850778,812366];
+  Plotly.newPlot('c-weekday',[
+    {type:'bar',x:days,y:dayS,
+     marker:{color:days.map((_,i)=>i>=5?COLORS.green:COLORS.blue)},
+     text:dayS.map(v=>'$'+Math.round(v/1000)+'K'),textposition:'outside',
+     hovertemplate:'<b>%{x}</b><br>Revenue: $%{y:,.0f}<extra></extra>'}
+  ],lay({
+    title:{text:'Revenue by Day of Week',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    yaxis:{title:{text:'Revenue (USD)'},tickprefix:'$',tickformat:',.0f',range:[0,960000]},
+    xaxis:{title:{text:'Day of Week'}},
+    annotations:[{x:5,y:875000,text:'📈 Weekend Peak',showarrow:false,font:{color:COLORS.green,size:12}}]
+  }),CFG);
+
+  Plotly.newPlot('c-shipping',[
+    {type:'bar',x:['Standard','Second Class','First Class','Same Day'],
+     y:[3195450,1016961,828353,270535],
+     marker:{color:[COLORS.blue,COLORS.green,COLORS.yellow,COLORS.red]},
+     text:['60.2%','19.1%','15.6%','5.1%'],textposition:'outside',
+     hovertemplate:'<b>%{x}</b><br>Revenue: $%{y:,.0f}<extra></extra>'}
+  ],lay({
+    title:{text:'Revenue by Shipping Mode',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    yaxis:{title:{text:'Revenue (USD)'},tickprefix:'$',tickformat:',.0f',range:[0,3700000]},
+    xaxis:{title:{text:'Shipping Mode'}}
+  }),CFG);
+
+  Plotly.newPlot('c-region-donut',[
+    {type:'pie',hole:.5,
+     labels:['West','East','South','Central'],
+     values:[1488909,1732679,948136,1141575],
+     marker:{colors:[COLORS.blue,COLORS.green,COLORS.yellow,COLORS.red]},
+     textinfo:'label+percent',
+     hovertemplate:'<b>%{label}</b><br>$%{value:,.0f}<br>%{percent}<extra></extra>',
+     pull:[0,.04,0,0]}
+  ],lay({
+    title:{text:'Revenue by Region — Donut',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.5,xanchor:'center'},
+    margin:{t:44,b:24,l:20,r:20},
+    annotations:[{text:'4 Regions',x:.5,y:.5,showarrow:false,font:{size:13,color:'#6b7280',family:FONT_FAMILY}}]
+  }),CFG);
+
   const cumSales=SALES.reduce((acc,v)=>[...acc,(acc.length?acc[acc.length-1]:0)+v],[]);
-  Plotly.newPlot('c-ytd',[{type:'scatter',mode:'lines',fill:'tozeroy',name:'Cumulative Revenue',x:MONTHS,y:cumSales,line:{color:'#1A73E8',width:3},fillcolor:'rgba(26,115,232,.1)'},{type:'scatter',mode:'lines',name:'Target (linear)',x:MONTHS,y:MONTHS.map((_,i)=>Math.round(5311299*(i+1)/12)),line:{color:'#EA4335',width:2,dash:'dot'}}],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},xaxis:{title:'Month'}}),CFG);
+  Plotly.newPlot('c-ytd',[
+    {type:'scatter',mode:'lines',fill:'tozeroy',name:'Actual YTD Revenue',
+     x:MONTHS,y:cumSales,
+     line:{color:COLORS.blue,width:3},fillcolor:'rgba(26,115,232,.1)',
+     hovertemplate:'%{x}: <b>$%{y:,.0f}</b><extra></extra>'},
+    {type:'scatter',mode:'lines',name:'Linear Target',
+     x:MONTHS,y:MONTHS.map((_,i)=>Math.round(5311299*(i+1)/12)),
+     line:{color:COLORS.red,width:2,dash:'dot'},
+     hovertemplate:'%{x} Target: <b>$%{y:,.0f}</b><extra></extra>'}
+  ],lay({
+    title:{text:'Cumulative YTD Revenue vs Linear Target',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    yaxis:{title:{text:'Cumulative Revenue (USD)'},tickprefix:'$',tickformat:',.0f'},
+    xaxis:{title:{text:'Month 2025'}}
+  }),CFG);
 }
 
-const BASE_REV=5311299,BASE_MARGIN=0.3160,BASE_TXNS=9353,AVG_ORDER=567.87;
+/* ─── SCENARIO ──────────────────────────────────── */
+const BASE_REV=5311299, BASE_MARGIN=0.3160, BASE_TXNS=9353, AVG_ORDER=567.87;
 function fmt(n){return '$'+(n>=1e6?(n/1e6).toFixed(2)+'M':(n/1e3).toFixed(0)+'K');}
-function fmtDelta(d){return (d>=0?'<span class="delta-pos">▲ +':'<span class="delta-neg">▼ ')+fmt(Math.abs(d))+'</span>';}
-function fmtPctDelta(d){return (d>=0?'<span class="delta-pos">▲ +':'<span class="delta-neg">▼ ')+Math.abs(d).toFixed(1)+'pp</span>';}
+function fmtDelta(d){return(d>=0?'<span class="delta-pos">▲ +':'<span class="delta-neg">▼ ')+fmt(Math.abs(d))+'</span>';}
+function fmtPctDelta(d){return(d>=0?'<span class="delta-pos">▲ +':'<span class="delta-neg">▼ ')+Math.abs(d).toFixed(1)+'pp</span>';}
 
 function runScenario(){
   const growth=parseFloat(document.getElementById('s-growth').value)/100;
@@ -321,30 +1047,92 @@ function runScenario(){
   document.getElementById('r-margin').textContent=(projMargin*100).toFixed(1)+'%';
   document.getElementById('r-margin-delta').innerHTML=fmtPctDelta((projMargin-BASE_MARGIN)*100);
   document.getElementById('r-txns').textContent=projTxns.toLocaleString();
-  document.getElementById('r-txns-delta').innerHTML='<span class="'+(projTxns>=BASE_TXNS?'delta-pos':'delta-neg')+'">'+(projTxns>=BASE_TXNS?'▲ +':'▼ ')+(Math.abs(projTxns-BASE_TXNS)).toLocaleString()+'</span>';
-  Plotly.react('c-scenario-bar',[{type:'bar',name:'Revenue',x:['Baseline','Projected'],y:[BASE_REV,projRev],marker:{color:['#9CA3AF','#1A73E8']},text:[fmt(BASE_REV),fmt(projRev)],textposition:'outside'},{type:'bar',name:'Profit',x:['Baseline','Projected'],y:[baseProfit,projProfit],marker:{color:['#D1FAE5','#34A853']},text:[fmt(baseProfit),fmt(projProfit)],textposition:'outside'}],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f',range:[0,Math.max(BASE_REV,projRev)*1.15]}}),CFG);
+  document.getElementById('r-txns-delta').innerHTML='<span class="'+(projTxns>=BASE_TXNS?'delta-pos':'delta-neg')+'">'+(projTxns>=BASE_TXNS?'▲ +':'▼ ')+Math.abs(projTxns-BASE_TXNS).toLocaleString()+'</span>';
+  Plotly.react('c-scenario-bar',[
+    {type:'bar',name:'Revenue',x:['Baseline','Projected'],y:[BASE_REV,projRev],
+     marker:{color:['#9CA3AF',COLORS.blue]},
+     text:[fmt(BASE_REV),fmt(projRev)],textposition:'outside',
+     hovertemplate:'%{x} Revenue: <b>$%{y:,.0f}</b><extra></extra>'},
+    {type:'bar',name:'Profit', x:['Baseline','Projected'],y:[baseProfit,projProfit],
+     marker:{color:['#d1fae5',COLORS.green]},
+     text:[fmt(baseProfit),fmt(projProfit)],textposition:'outside',
+     hovertemplate:'%{x} Profit: <b>$%{y:,.0f}</b><extra></extra>'}
+  ],lay({
+    title:{text:'Scenario vs Baseline',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    barmode:'group',
+    yaxis:{title:{text:'Amount (USD)'},tickprefix:'$',tickformat:',.0f',range:[0,Math.max(BASE_REV,projRev)*1.18]},
+    xaxis:{title:{text:''}}
+  }),CFG);
 }
 
 function renderSensitivity(){
   const growthRates=[-20,-15,-10,-5,0,5,10,15,20,25,30];
   const margins=[0.20,0.25,0.31,0.35];
-  const colors=['#EA4335','#FBBC04','#34A853','#1A73E8'];
-  const traces=margins.map((m,i)=>({type:'scatter',mode:'lines+markers',name:'Margin '+Math.round(m*100)+'%',x:growthRates,y:growthRates.map(g=>+(BASE_REV*(1+g/100)*m/1e6).toFixed(3)),line:{color:colors[i],width:2},marker:{size:5}}));
-  Plotly.newPlot('c-sensitivity',traces,lay({xaxis:{title:'Revenue Growth %',ticksuffix:'%'},yaxis:{title:'Projected Profit ($M)',tickprefix:'$',ticksuffix:'M'},shapes:[{type:'line',x0:-20,x1:30,y0:BASE_REV*BASE_MARGIN/1e6,y1:BASE_REV*BASE_MARGIN/1e6,line:{color:'#555',width:1.5,dash:'dot'}}],annotations:[{x:28,y:BASE_REV*BASE_MARGIN/1e6,text:'2025 Actual',showarrow:false,font:{color:'#555',size:10},yshift:8}]}),CFG);
+  const mColors=[COLORS.red,COLORS.yellow,COLORS.green,COLORS.blue];
+  const traces=margins.map((m,i)=>({
+    type:'scatter',mode:'lines+markers',
+    name:'Margin '+Math.round(m*100)+'%',
+    x:growthRates,
+    y:growthRates.map(g=>+(BASE_REV*(1+g/100)*m/1e6).toFixed(3)),
+    line:{color:mColors[i],width:2.5},
+    marker:{size:5},
+    hovertemplate:'Growth %{x}%<br>Profit: <b>$%{y:.3f}M</b><extra></extra>'
+  }));
+  Plotly.newPlot('c-sensitivity',traces,lay({
+    title:{text:'Sensitivity: Growth Rate vs Projected Profit',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    xaxis:{title:{text:'Revenue Growth (%)'},ticksuffix:'%'},
+    yaxis:{title:{text:'Projected Profit (USD M)'},tickprefix:'$',ticksuffix:'M'},
+    shapes:[{type:'line',x0:-20,x1:30,y0:BASE_REV*BASE_MARGIN/1e6,y1:BASE_REV*BASE_MARGIN/1e6,line:{color:'#374151',width:1.5,dash:'dot'}}],
+    annotations:[{x:26,y:BASE_REV*BASE_MARGIN/1e6,text:'2025 Actual',showarrow:false,font:{color:'#374151',size:10},yshift:9}]
+  }),CFG);
 }
 
+/* ─── INSIGHTS ──────────────────────────────────── */
 function renderInsights(){
   const csSorted=[...CAT_S].sort((a,b)=>b-a);
   const total=csSorted.reduce((a,b)=>a+b,0);
   let cum=0;
-  const cumPct=csSorted.map(v=>{cum+=v;return +(cum/total*100).toFixed(1);});
+  const cumPct=csSorted.map(v=>{cum+=v;return+(cum/total*100).toFixed(1);});
   const catsSorted=['Electronics','Home & Kitchen','Clothing','Beauty','Sports','Books','Food'];
-  Plotly.newPlot('c-pareto',[{type:'bar',name:'Revenue',x:catsSorted,y:csSorted,marker:{color:'#1A73E8'},opacity:.85},{type:'scatter',mode:'lines+markers',name:'Cumulative %',x:catsSorted,y:cumPct,yaxis:'y2',line:{color:'#EA4335',width:2.5},marker:{size:8,color:'#EA4335'}}],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},yaxis2:{title:'Cumulative %',overlaying:'y',side:'right',ticksuffix:'%',range:[0,110]},shapes:[{type:'line',x0:-.5,x1:6.5,y0:80,y1:80,line:{color:'#EA4335',width:1,dash:'dash'},yref:'y2'}],annotations:[{x:5.5,y:80,text:'80% line',showarrow:false,font:{color:'#EA4335',size:10},yref:'y2',yshift:8}]}),CFG);
+  Plotly.newPlot('c-pareto',[
+    {type:'bar',name:'Revenue',x:catsSorted,y:csSorted,
+     marker:{color:COLORS.blue,opacity:.85},
+     hovertemplate:'%{x}<br>Revenue: <b>$%{y:,.0f}</b><extra></extra>'},
+    {type:'scatter',mode:'lines+markers',name:'Cumulative %',x:catsSorted,y:cumPct,
+     yaxis:'y2',line:{color:COLORS.red,width:2.5},marker:{size:8,color:COLORS.red},
+     hovertemplate:'%{x}<br>Cumulative: <b>%{y:.1f}%</b><extra></extra>'}
+  ],lay({
+    title:{text:'Revenue Concentration — Pareto Analysis',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    yaxis:{title:{text:'Revenue (USD)'},tickprefix:'$',tickformat:',.0f'},
+    yaxis2:{title:{text:'Cumulative (%)'},overlaying:'y',side:'right',ticksuffix:'%',range:[0,112]},
+    xaxis:{title:{text:'Category (sorted by revenue)'}},
+    shapes:[{type:'line',x0:-.5,x1:6.5,y0:80,y1:80,line:{color:COLORS.red,width:1.2,dash:'dash'},yref:'y2'}],
+    annotations:[{x:5.5,y:80,text:'80% line',showarrow:false,font:{color:COLORS.red,size:10},yref:'y2',yshift:9}]
+  }),CFG);
+
   const regions=['West','East','South','Central'];
-  const zData=[[29.5,30.1,27.8,28.9],[33.2,34.5,32.1,31.8],[38.9,40.1,37.5,39.2],[41.2,42.3,40.0,41.8],[34.5,35.8,33.2,34.9],[49.8,50.5,48.2,49.3],[33.2,34.1,32.5,33.8]];
-  Plotly.newPlot('c-heatmap',[{type:'heatmap',z:zData,x:regions,y:CATS,colorscale:'RdYlGn',text:zData.map(row=>row.map(v=>v+'%')),texttemplate:'%{text}',showscale:true,hovertemplate:'%{y} × %{x}<br>Margin: %{z}%<extra></extra>'}],lay({margin:{t:20,b:60,l:120,r:60},xaxis:{title:'Region'},yaxis:{title:''}}),CFG);
+  const zData=[
+    [29.5,30.1,27.8,28.9],[33.2,34.5,32.1,31.8],
+    [38.9,40.1,37.5,39.2],[41.2,42.3,40.0,41.8],
+    [34.5,35.8,33.2,34.9],[49.8,50.5,48.2,49.3],[33.2,34.1,32.5,33.8]
+  ];
+  Plotly.newPlot('c-heatmap',[
+    {type:'heatmap',z:zData,x:regions,y:CATS,
+     colorscale:'RdYlGn',zmin:25,zmax:55,
+     text:zData.map(row=>row.map(v=>v+'%')),
+     texttemplate:'<b>%{text}</b>',
+     showscale:true,
+     colorbar:{title:{text:'Margin %',side:'right'},thickness:14,len:.9},
+     hovertemplate:'<b>%{y}</b> × <b>%{x}</b><br>Margin: <b>%{z}%</b><extra></extra>'}
+  ],lay({
+    title:{text:'Profit Margin % Heatmap — Category × Region',font:{family:"'Sora',sans-serif",size:13,color:'#1a1f36'},x:0.02,xanchor:'left'},
+    margin:{t:36,b:64,l:130,r:72},
+    xaxis:{title:{text:'Region'}},
+    yaxis:{title:{text:''}}
+  }),CFG);
 }
 
+/* ─── INIT ──────────────────────────────────────── */
 runScenario();
 </script>
 </body>
