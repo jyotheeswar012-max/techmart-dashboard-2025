@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-06-10T12:21:08Z",
+  "total_revenue": 5311299.06,
+  "total_profit": 1678062.58,
+  "profit_margin_pct": 31.59,
+  "transaction_count": 9353,
+  "avg_order_value": 567.87,
+  "revenue_by_category": {
+    "Electronics": 2957098.78,
+    "Home & Kitchen": 1159585.34,
+    "Clothing": 577843.3,
+    "Beauty & Health": 312011.23,
+    "Sports & Fitness": 224504.09,
+    "Books & Media": 42897.48,
+    "Food & Grocery": 37358.84
+  },
+  "revenue_by_region": {
+    "East": 1732679.14,
+    "West": 1488909.13,
+    "Central": 1141574.93,
+    "South": 948135.86
+  },
+  "top_product": "Sony WH-1000XM5"
+}

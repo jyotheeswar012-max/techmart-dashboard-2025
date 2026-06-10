@@ -1,0 +1,24 @@
+2026-06-10 12:21:07  INFO      =======================================================
+2026-06-10 12:21:07  INFO        TechMart Data Pipeline — 2026-06-10 12:21 UTC
+2026-06-10 12:21:07  INFO        Mode: LIVE
+2026-06-10 12:21:07  INFO      =======================================================
+2026-06-10 12:21:07  INFO      Fetching market data for: ['SPY', 'QQQ', 'XRT'] (period=1mo)
+2026-06-10 12:21:08  INFO      Saved → /home/runner/work/techmart-dashboard-2025/techmart-dashboard-2025/data/market_context.csv  (21 rows)
+2026-06-10 12:21:08  INFO      OXR_APP_ID not set — skipping FX fetch (optional enrichment).
+2026-06-10 12:21:08  INFO      Reading source CSV: /home/runner/work/techmart-dashboard-2025/techmart-dashboard-2025/superstore_2025_full.csv
+2026-06-10 12:21:08  INFO      Loaded 9353 rows × 28 columns
+2026-06-10 12:21:08  INFO      Snapshot saved → /home/runner/work/techmart-dashboard-2025/techmart-dashboard-2025/data/superstore_snapshot_20260610.csv  (9353 rows)
+2026-06-10 12:21:08  INFO      KPI summary saved → /home/runner/work/techmart-dashboard-2025/techmart-dashboard-2025/data/kpi_summary.json
+2026-06-10 12:21:08  INFO      [Scenario Demo] +5%% growth, 0pp discount shift:
+2026-06-10 12:21:08  INFO        base_revenue:                5311299.06
+2026-06-10 12:21:08  INFO        growth_pct:                  5.0
+2026-06-10 12:21:08  INFO        discount_shift_pct:          0.0
+2026-06-10 12:21:08  INFO        new_category_revenue:        0.0
+2026-06-10 12:21:08  INFO        projected_revenue:           5576864.01
+2026-06-10 12:21:08  INFO        projected_profit:            1761731.34
+2026-06-10 12:21:08  INFO        effective_margin:            31.59
+2026-06-10 12:21:08  INFO        delta_revenue:               265564.95
+2026-06-10 12:21:08  INFO        delta_profit:                83891.97
+2026-06-10 12:21:08  INFO      =======================================================
+2026-06-10 12:21:08  INFO        Pipeline SUCCESS
+2026-06-10 12:21:08  INFO      =======================================================
