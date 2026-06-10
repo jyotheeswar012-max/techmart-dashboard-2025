@@ -1,12 +1,12 @@
 # 🛍️ TechMart Business Analytics Dashboard 2025
 
 [![Live Dashboard](https://img.shields.io/badge/🚀%20Live%20Demo-GitHub%20Pages-success?style=for-the-badge)](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/)
-[![Tests](https://img.shields.io/badge/tests-18%20passed-brightgreen?style=flat-square&logo=pytest&logoColor=white)](./tests/)
+[![Tests](https://img.shields.io/badge/tests-18%20passed-brightgreen?style=flat-square)](./tests/)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Plotly](https://img.shields.io/badge/Plotly-5.x-3F4F75?style=flat-square&logo=plotly&logoColor=white)](https://plotly.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
 
-> 📌 **Static Dataset** – This dashboard analyzes fixed 2025 sales data. No live updates.
+> 📌 **Static Dataset** – This dashboard analyzes fixed 2025 sales data. All insights and visualizations are based on that fixed dataset. No live data is being fetched.
 
 > **An end-to-end retail analytics project** — one-time ETL pipeline, 16+ interactive Plotly charts, a live **What-If Scenario Analysis Engine**, and a full pytest test suite. Raw transaction data → actionable business decisions.
 
@@ -104,7 +104,7 @@ The dashboard's **Scenario tab** runs live JavaScript calculations as you drag s
 📈 Optimistic  (+10% growth, stable margin)   →  Revenue $5.84M  |  Profit $1.85M  |  +$170K
 📉 Pessimistic (−5% decline, margin −2pp)     →  Revenue $5.05M  |  Profit $1.46M  |  −$218K
 🏷️  Discount +5pp (margin impact −2.8pp)      →  Revenue $5.31M  |  Profit $1.53M  |  −$144K
-🆕 New Category +$200K                         →  Revenue $5.51M  |  Profit $1.74M  |  +$68K
+🆕 New Category +$200K                         →  Revenue $5.51M  |  Profit $1.74M  |  + $68K
 ```
 
 ---
@@ -139,12 +139,12 @@ techmart-dashboard-2025/
 ├── pipeline/
 │   ├── __init__.py
 │   ├── fetch_data.py            # One-time ETL script
-│   └── README.md                # Pipeline context & usage
+│   └── README.md                # ← Run once, not scheduled
 ├── tests/
 │   ├── __init__.py
 │   ├── test_metrics.py          # 13 unit tests
 │   └── test_pipeline_integration.py  # 5 integration tests
-├── data/                        # Pipeline outputs
+├── data/                        # Pipeline outputs (static)
 │   ├── market_context.csv
 │   ├── fx_rates.csv
 │   ├── kpi_summary.json
