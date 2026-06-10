@@ -1,12 +1,13 @@
 # 🛍️ TechMart Business Analytics Dashboard 2025
 
 [![Live Dashboard](https://img.shields.io/badge/🚀%20Live%20Demo-GitHub%20Pages-success?style=for-the-badge)](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Daily Pipeline](https://github.com/jyotheeswar012-max/techmart-dashboard-2025/actions/workflows/pipeline.yml/badge.svg)](https://github.com/jyotheeswar012-max/techmart-dashboard-2025/actions/workflows/pipeline.yml)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Plotly](https://img.shields.io/badge/Plotly-5.x-3F4F75?style=flat-square&logo=plotly&logoColor=white)](https://plotly.com)
 [![pytest](https://img.shields.io/badge/Tests-pytest%2018%20cases-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](./tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
 
-> **An end-to-end retail analytics project** demonstrating data pipeline automation, 16+ interactive charts, an interactive **What-If Scenario Analysis Engine**, and a full pytest test suite — transforming raw transaction data into actionable business decisions.
+> **An end-to-end retail analytics project** — automated data pipeline, 16+ interactive Plotly charts, a live **What-If Scenario Analysis Engine**, and a full pytest test suite. Raw transaction data → actionable business decisions.
 
 ---
 
@@ -27,32 +28,103 @@
 
 ---
 
+## 📸 Dashboard Preview
+
+> *Click the live link above to explore all 16+ interactive charts with hover tooltips, zoom, and real-time filters.*
+
+### Chart 1 — Monthly Revenue & Profit Trend
+
+```
+ Revenue ($)    Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
+ ───────────────────────────────────────────────────────────────────────────────────
+ $673K ┤                                                                    ███ ████
+ $588K ┤                                                               ███
+ $485K ┤                                                          ███  ░░░
+ $464K ┤                                           ███  ███  ███  ░░░
+ $440K ┤                      ███  ███  ░░░  ███   ░░░  ░░░  ░░░
+ $378K ┤         ░░░  ███     ░░░  ░░░       ░░░
+ $321K ┤ ███     ░░░  ░░░
+ $298K ┤ ░░░  ███
+       └───────────────────────────────────────────────────────────────────────────
+              ███ Revenue (line)   ░░░ Profit (bar)
+ Key insight: Q4 (Oct–Dec) = 32.9% of annual revenue ($1.75M) despite being 25% of the year.
+```
+
+### Chart 2 — Discount Impact on Profit Margin (The Danger Zone)
+
+```
+ Net Margin    Sales Volume
+ ──────────────────────────────────────────────────────────
+  33.5% │ ████████████████████████  $1.85M  ← 0% discount
+  30.3% │ ████████████████████      $1.42M  ← 1–5%
+  26.4% │ ████████████████          $1.10M  ← 6–10%
+  19.4% │ ████████████              $0.62M  ← 11–15%
+  12.5% │ ████                      $0.28M  ← 16–20%
+  -0.2% │ █  ← NEGATIVE MARGIN      $0.09M  ← 21%+
+ ───────────────────────────────────────────────────────────
+ ⚠️  Every +5pp discount = −2.8pp net margin compression.
+     Capping promotions at 15% could recover ~$130K/year.
+```
+
+### Chart 3 — Profit Margin Heatmap (Category × Region)
+
+```
+              West    East    South   Central
+ ─────────────────────────────────────────────────
+ Books       │ 49.8%  50.5%   48.2%   49.3%  │ 🟢 Highest
+ Beauty      │ 41.2%  42.3%   40.0%   41.8%  │ 🟢
+ Clothing    │ 38.9%  40.1%   37.5%   39.2%  │ 🟢
+ Sports      │ 34.5%  35.8%   33.2%   34.9%  │ 🟡
+ Home & Kit. │ 33.2%  34.5%   32.1%   31.8%  │ 🟡
+ Food        │ 33.2%  34.1%   32.5%   33.8%  │ 🟡
+ Electronics │ 29.5%  30.1%   27.8%   28.9%  │ 🔴 Below avg
+ ─────────────────────────────────────────────────
+  South consistently lowest across all categories → pricing review opportunity.
+```
+
+### Chart 4 — Scenario Analysis Engine (Interactive)
+
+```
+ ┌─────────────────────────────────────────────────────────────────┐
+ │  🔬 What-If Scenario Analysis Engine                           │
+ │                                                                 │
+ │  Revenue Growth:  ────────●────────────  +5%                   │
+ │  Margin Shift:    ──────●──────────────   0 pp                  │
+ │  Discount Change: ────────────●────────   0%                   │
+ │  New Category:    ●────────────────────  $0K                   │
+ │                                                                 │
+ │  📊 Projected Revenue  $5.58M   ▲ +$267K                       │
+ │  💰 Projected Profit   $1.76M   ▲ + $84K                       │
+ │  📈 Projected Margin   31.6%    → same                         │
+ │  🧾 Est. Transactions  9,820    ▲ +467                         │
+ └─────────────────────────────────────────────────────────────────┘
+  Sliders update all four cards in real time — no page reload.
+```
+
+---
+
 ## 💡 Key Business Insights
 
 > *"Analysis of 9,353 transactions reveals that discounts over 20% erode profit margins by ~15% — dropping from 31.7% to under 17% — suggesting a tiered discount cap strategy for low-margin categories could recover an estimated $130K+ in annual profit."*
 
-### Top 3 Findings
+1. **🏷️ Discount Danger Zone** — Net margin turns negative at the 21%+ bracket. Limiting discounts to ≤15% for Books, Food, and Sports could protect ~$130K in annual profit.
 
-1. **🏷️ Discount Danger Zone**: Net margin collapses at the 21%+ bracket (turns negative at –0.2%). Limiting discounts to ≤15% for Books, Food, and Sports could protect ~$130K in annual profit.
+2. **📅 Q4 Dominance & Risk** — Q4 generated 32.9% of annual revenue ($1.75M). A stockout scenario in Electronics during Nov–Dec would disproportionately impact the full-year P&L — demand forecasting is critical.
 
-2. **📅 Q4 Dominance & Risk**: Q4 generated 32.9% of annual revenue ($1.75M). A stockout scenario in Electronics during November–December would disproportionately impact the full-year P&L — demand forecasting is critical.
-
-3. **🎂 36–45 is the Power Cohort**: The 36–45 age group contributes 31.7% of revenue ($1.68M) with the highest average order value. Retention-focused loyalty program enhancements for this segment yield the highest expected ROI.
+3. **🎂 36–45 is the Power Cohort** — The 36–45 age group contributes 31.7% of revenue ($1.68M) with the highest average order value. Retention-focused loyalty program enhancements for this segment yield the highest expected ROI.
 
 ---
 
-## 🔬 Scenario Analysis ("What-If" Engine)
+## 🔬 Scenario Analysis Engine
 
-The dashboard includes an **interactive Scenario Analysis tab** powered by live JavaScript calculations:
+The dashboard's **Scenario tab** runs live JavaScript calculations as you drag sliders:
 
 ```
-📈 Optimistic (+10% growth, stable margin):  Revenue $5.84M  |  Profit $1.85M  |  +$170K
-📉 Pessimistic (−5% decline, margin −2pp):   Revenue $5.05M  |  Profit $1.46M  |  −$218K
-🏷️ Discount +5% (margin impact −2.8pp):      Revenue $5.31M  |  Profit $1.53M  |  −$144K
-🆕 New Category +$200K:                       Revenue $5.51M  |  Profit $1.74M  |  + $68K
+📈 Optimistic  (+10% growth, stable margin)   →  Revenue $5.84M  |  Profit $1.85M  |  +$170K
+📉 Pessimistic (−5% decline, margin −2pp)     →  Revenue $5.05M  |  Profit $1.46M  |  −$218K
+🏷️  Discount +5pp (margin impact −2.8pp)      →  Revenue $5.31M  |  Profit $1.53M  |  −$144K
+🆕 New Category +$200K                         →  Revenue $5.51M  |  Profit $1.74M  |  + $68K
 ```
-
-Use the sliders at `/scenario` tab to model any combination in real time.
 
 ---
 
@@ -60,18 +132,26 @@ Use the sliders at `/scenario` tab to model any combination in real time.
 
 ```
 techmart-dashboard-2025/
-├── docs/                        # ✅ GitHub Pages (live dashboard)
-│   └── index.html               # Self-contained: 16+ Plotly charts + Scenario Engine
-├── pipeline/                    # ✨ Automated data pipeline
+├── index.html                   # ✅ GitHub Pages root (full dashboard)
+├── docs/
+│   └── index.html               # Mirror copy for /docs Pages config
+├── pipeline/
 │   ├── __init__.py
-│   └── fetch_data.py            # yfinance + requests + metric helpers
-├── tests/                       # ✅ pytest test suite (18 tests)
+│   └── fetch_data.py            # Automated pipeline (see setup below)
+├── tests/
 │   ├── __init__.py
-│   ├── test_metrics.py          # CAGR, margin, scenario — 13 unit tests
+│   ├── test_metrics.py          # 13 unit tests
 │   └── test_pipeline_integration.py  # 5 integration tests
-├── scenario_analysis/           # 📈 What-If analysis documentation
+├── data/                        # Pipeline outputs (auto-generated)
+│   ├── market_context.csv       # SPY/QQQ/XRT daily closes
+│   ├── fx_rates.csv             # USD exchange rates
+│   ├── kpi_summary.json         # Aggregated KPIs (JSON)
+│   └── superstore_snapshot_YYYYMMDD.csv
+├── .github/workflows/
+│   └── pipeline.yml             # Daily cron at 06:00 UTC
+├── scenario_analysis/
 │   └── README.md
-├── superstore_2025_full.csv     # Source dataset (9,353 transactions)
+├── superstore_2025_full.csv     # Source dataset (9,353 rows)
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -79,18 +159,81 @@ techmart-dashboard-2025/
 
 ---
 
-## 🔄 Automated Data Pipeline
+## 🔄 Data Pipeline — Setup Guide
+
+The pipeline has **zero required configuration** — it runs out of the box.
+The `OXR_APP_ID` variable is **100% optional** (FX rate enrichment only).
+
+### Quickstart (no API keys needed)
 
 ```bash
-# Run full pipeline (fetches market data + creates timestamped snapshot)
+git clone https://github.com/jyotheeswar012-max/techmart-dashboard-2025.git
+cd techmart-dashboard-2025
+pip install -r requirements.txt
+
+# Run the full pipeline — works immediately, no setup required
 python pipeline/fetch_data.py
 ```
 
-| Source | Library | Data Fetched |
-|---|---|---|
-| Stock/ETF prices | `yfinance` | SPY, QQQ, XRT (Retail sector ETF) |
-| FX Rates | `requests` + OXR API | USD cross rates (set `OXR_APP_ID` env var) |
-| Internal Sales | CSV → snapshot | Timestamped export to `data/` |
+**What runs without any API key:**
+
+| Step | Source | Output | Requires Key? |
+|---|---|---|---|
+| Market data | `yfinance` (free) | `data/market_context.csv` | ❌ No |
+| Sales snapshot | Local CSV | `data/superstore_snapshot_YYYYMMDD.csv` | ❌ No |
+| KPI summary | Computed | `data/kpi_summary.json` | ❌ No |
+| FX rates | Open Exchange Rates | `data/fx_rates.csv` | ✅ Optional |
+
+### Optional: Enable FX Rate Enrichment
+
+```bash
+# 1. Sign up free (no credit card) at https://openexchangerates.org
+# 2. Copy your App ID, then:
+export OXR_APP_ID="your_app_id_here"   # Mac/Linux
+set    OXR_APP_ID=your_app_id_here     # Windows CMD
+
+# Now the FX step will also run:
+python pipeline/fetch_data.py
+```
+
+### CLI flags
+
+```bash
+# Validate everything without writing any files
+python pipeline/fetch_data.py --dry-run
+
+# Change the market data lookback window
+python pipeline/fetch_data.py --period 3mo
+
+# Combine flags
+python pipeline/fetch_data.py --dry-run --period 1y
+```
+
+### Expected output
+
+```
+=======================================================
+  TechMart Data Pipeline — 2026-06-10 12:30 UTC
+  Mode: LIVE
+=======================================================
+2026-06-10 12:30:01  INFO      Fetching market data for: ['SPY', 'QQQ', 'XRT'] (period=1mo)
+2026-06-10 12:30:03  INFO      Saved → data/market_context.csv  (22 rows)
+2026-06-10 12:30:03  INFO      OXR_APP_ID not set — skipping FX fetch (optional enrichment).
+2026-06-10 12:30:03  INFO      Reading source CSV: superstore_2025_full.csv
+2026-06-10 12:30:04  INFO      Loaded 9,353 rows × 22 columns
+2026-06-10 12:30:04  INFO      Snapshot saved → data/superstore_snapshot_20260610.csv
+2026-06-10 12:30:04  INFO      KPIs → Revenue: $5,311,299 | Profit: $1,677,063 | Margin: 31.6%
+2026-06-10 12:30:04  INFO      KPI summary saved → data/kpi_summary.json
+=======================================================
+  Pipeline SUCCESS
+=======================================================
+```
+
+### Automated via GitHub Actions
+
+The pipeline runs **daily at 06:00 UTC** via `.github/workflows/pipeline.yml`.
+Outputs are committed back to `data/` automatically.
+Check run history: [Actions tab →](https://github.com/jyotheeswar012-max/techmart-dashboard-2025/actions)
 
 ---
 
@@ -106,11 +249,12 @@ pytest tests/ -v
 pytest tests/ -v --cov=pipeline --cov-report=term-missing
 ```
 
-**Coverage:**
-- `calculate_cagr` — 8 tests (known values, edge cases, error handling)
-- `calculate_profit_margin` — 5 tests
-- `scenario_revenue_impact` — 5 tests
-- `refresh_superstore_snapshot` — integration tests
+**Test coverage:**
+
+| Test file | Cases | Covers |
+|---|---|---|
+| `test_metrics.py` | 13 | `calculate_cagr`, `calculate_profit_margin`, `scenario_revenue_impact` |
+| `test_pipeline_integration.py` | 5 | `refresh_superstore_snapshot`, `generate_kpi_summary` |
 
 ---
 
@@ -120,23 +264,10 @@ pytest tests/ -v --cov=pipeline --cov-report=term-missing
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)
 ![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=flat-square&logo=plotly&logoColor=white)
 ![yfinance](https://img.shields.io/badge/yfinance-0.2-purple?style=flat-square)
-![pytest](https://img.shields.io/badge/pytest-7.x-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-8.x-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-
----
-
-## 🚀 Quick Start
-
-```bash
-git clone https://github.com/jyotheeswar012-max/techmart-dashboard-2025.git
-cd techmart-dashboard-2025
-pip install -r requirements.txt
-
-python pipeline/fetch_data.py   # run pipeline
-pytest tests/ -v                # run tests
-open docs/index.html            # open dashboard locally
-```
 
 ---
 
