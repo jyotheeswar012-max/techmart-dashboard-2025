@@ -1,13 +1,14 @@
 # 🛍️ TechMart Business Analytics Dashboard 2025
 
 [![Live Dashboard](https://img.shields.io/badge/🚀%20Live%20Demo-GitHub%20Pages-success?style=for-the-badge)](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/)
-[![Daily Pipeline](https://github.com/jyotheeswar012-max/techmart-dashboard-2025/actions/workflows/pipeline.yml/badge.svg)](https://github.com/jyotheeswar012-max/techmart-dashboard-2025/actions/workflows/pipeline.yml)
+[![Tests](https://img.shields.io/badge/tests-18%20passed-brightgreen?style=flat-square&logo=pytest&logoColor=white)](./tests/)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Plotly](https://img.shields.io/badge/Plotly-5.x-3F4F75?style=flat-square&logo=plotly&logoColor=white)](https://plotly.com)
-[![pytest](https://img.shields.io/badge/Tests-pytest%2018%20cases-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](./tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
 
-> **An end-to-end retail analytics project** — automated data pipeline, 16+ interactive Plotly charts, a live **What-If Scenario Analysis Engine**, and a full pytest test suite. Raw transaction data → actionable business decisions.
+> 📌 **Static Dataset** – This dashboard analyzes fixed 2025 sales data. No live updates.
+
+> **An end-to-end retail analytics project** — one-time ETL pipeline, 16+ interactive Plotly charts, a live **What-If Scenario Analysis Engine**, and a full pytest test suite. Raw transaction data → actionable business decisions.
 
 ---
 
@@ -78,6 +79,23 @@
 
 ---
 
+## 🔄 One-Time ETL Pipeline (Static 2025 Data)
+
+This project uses a **static** 2025 sales dataset. The pipeline below was executed **once** to generate that dataset from raw sources.
+
+> **Note:** No daily or scheduled automation runs. The pipeline code is preserved here to demonstrate ETL and data cleaning approach.
+
+### Pipeline Script
+- `pipeline/fetch_data.py` – Downloads, cleans, and enriches the raw data into `data/techmart_sales_2025.csv`.
+- Run it manually with:
+  ```bash
+  python pipeline/fetch_data.py
+  ```
+
+For a live, auto-updating dashboard, see my next project (coming soon).
+
+---
+
 ## 🔬 Scenario Analysis Engine
 
 The dashboard's **Scenario tab** runs live JavaScript calculations as you drag sliders:
@@ -86,86 +104,17 @@ The dashboard's **Scenario tab** runs live JavaScript calculations as you drag s
 📈 Optimistic  (+10% growth, stable margin)   →  Revenue $5.84M  |  Profit $1.85M  |  +$170K
 📉 Pessimistic (−5% decline, margin −2pp)     →  Revenue $5.05M  |  Profit $1.46M  |  −$218K
 🏷️  Discount +5pp (margin impact −2.8pp)      →  Revenue $5.31M  |  Profit $1.53M  |  −$144K
-🆕 New Category +$200K                         →  Revenue $5.51M  |  Profit $1.74M  |  + $68K
+🆕 New Category +$200K                         →  Revenue $5.51M  |  Profit $1.74M  |  +$68K
 ```
 
 ---
 
-## 📁 Project Structure
+## ✅ Testing
 
-```
-techmart-dashboard-2025/
-├── index.html                   # ✅ GitHub Pages root (full dashboard)
-├── docs/
-│   ├── index.html               # Mirror copy for /docs Pages config
-│   └── screenshots/             # Dashboard screenshots
-├── pipeline/
-│   ├── __init__.py
-│   └── fetch_data.py            # Automated pipeline
-├── tests/
-│   ├── __init__.py
-│   ├── test_metrics.py          # 13 unit tests
-│   └── test_pipeline_integration.py  # 5 integration tests
-├── data/                        # Pipeline outputs (auto-generated)
-│   ├── market_context.csv
-│   ├── fx_rates.csv
-│   ├── kpi_summary.json
-│   └── superstore_snapshot_YYYYMMDD.csv
-├── .github/workflows/
-│   └── pipeline.yml             # Daily cron at 06:00 UTC
-├── superstore_2025_full.csv     # Source dataset (9,353 rows)
-├── requirements.txt
-├── LICENSE
-└── README.md
-```
-
----
-
-## 🔄 Data Pipeline — Setup Guide
-
-The pipeline has **zero required configuration** — it runs out of the box.
-The `OXR_APP_ID` variable is **100% optional** (FX rate enrichment only).
-
-### Quickstart (no API keys needed)
-
-```bash
-git clone https://github.com/jyotheeswar012-max/techmart-dashboard-2025.git
-cd techmart-dashboard-2025
-pip install -r requirements.txt
-python pipeline/fetch_data.py
-```
-
-**What runs without any API key:**
-
-| Step | Source | Output | Requires Key? |
-|---|---|---|---|
-| Market data | `yfinance` (free) | `data/market_context.csv` | ❌ No |
-| Sales snapshot | Local CSV | `data/superstore_snapshot_YYYYMMDD.csv` | ❌ No |
-| KPI summary | Computed | `data/kpi_summary.json` | ❌ No |
-| FX rates | Open Exchange Rates | `data/fx_rates.csv` | ✅ Optional |
-
-### Optional: Enable FX Rate Enrichment
-
-```bash
-export OXR_APP_ID="your_app_id_here"
-python pipeline/fetch_data.py
-```
-
-### CLI flags
-
-```bash
-python pipeline/fetch_data.py --dry-run
-python pipeline/fetch_data.py --period 3mo
-```
-
-### Automated via GitHub Actions
-
-Runs **daily at 06:00 UTC** via `.github/workflows/pipeline.yml`.
-Check run history: [Actions tab →](https://github.com/jyotheeswar012-max/techmart-dashboard-2025/actions)
-
----
-
-## ✅ Running Tests
+Run `pytest tests/` to execute 18 unit and integration tests. The tests validate:
+- Data loading and shape
+- Key metric calculations (revenue, profit margin)
+- Scenario analysis engine logic
 
 ```bash
 pip install -r requirements.txt
@@ -180,6 +129,34 @@ pytest tests/ -v --cov=pipeline --cov-report=term-missing
 
 ---
 
+## 📁 Project Structure
+
+```
+techmart-dashboard-2025/
+├── index.html                   # ✅ GitHub Pages root (full dashboard)
+├── docs/
+│   └── index.html               # Mirror copy for /docs Pages config
+├── pipeline/
+│   ├── __init__.py
+│   ├── fetch_data.py            # One-time ETL script
+│   └── README.md                # Pipeline context & usage
+├── tests/
+│   ├── __init__.py
+│   ├── test_metrics.py          # 13 unit tests
+│   └── test_pipeline_integration.py  # 5 integration tests
+├── data/                        # Pipeline outputs
+│   ├── market_context.csv
+│   ├── fx_rates.csv
+│   ├── kpi_summary.json
+│   └── superstore_snapshot_YYYYMMDD.csv
+├── superstore_2025_full.csv     # Source dataset (9,353 rows)
+├── requirements.txt
+├── LICENSE
+└── README.md
+```
+
+---
+
 ## 🛠️ Tech Stack
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
@@ -187,7 +164,6 @@ pytest tests/ -v --cov=pipeline --cov-report=term-missing
 ![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=flat-square&logo=plotly&logoColor=white)
 ![yfinance](https://img.shields.io/badge/yfinance-0.2-purple?style=flat-square)
 ![pytest](https://img.shields.io/badge/pytest-8.x-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 
