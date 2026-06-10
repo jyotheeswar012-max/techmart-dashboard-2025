@@ -1,84 +1,80 @@
-# 🛍️ TechMart Inc. - Business Performance Dashboard 2025
+<div align="center">
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue) ![Plotly](https://img.shields.io/badge/Plotly-5.x-orange) ![License](https://img.shields.io/badge/License-MIT-green) ![Status](https://img.shields.io/badge/Status-Live-brightgreen)
+# 🛍️ TechMart Business Analytics Dashboard 2025
 
-> **Designed & built by [Jyotheeswar Reddy](https://github.com/jyotheeswar012-max)**  
-> 📍 Manipal University, Jaipur · 📧 jyotheeswar0802@gmail.com
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Click%20Here-success?style=for-the-badge)](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/docs/)
+[![Made with Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
+[![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)]()
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)]()
 
-Interactive business analytics dashboard tracking **$5.3M+ sales**, **9,353 transactions**, **1,198 customers** across 365 days (Jan–Dec 2025).
+> 📊 **A fully interactive business intelligence dashboard tracking real-world retail KPIs with 12+ dynamic charts**
+
+</div>
 
 ---
 
-## 🔗 Live Dashboard
+## 🔥 What Makes This Special?
+
+```
+┌──────────────────────────────────────────────────┐
+│  💰  Total Sales Revenue   :   $5,357,458          │
+│  🛝  Total Transactions    :   9,353               │
+│  👥  Unique Customers      :   1,198               │
+│  📦  Product Categories    :   3 (Furniture/Tech/Office)│
+│  🌎  Regions Covered       :   4 (US National)     │
+│  📈  Interactive Charts    :   12+                 │
+└──────────────────────────────────────────────────┘
+```
+
+## 📊 Dashboard Features
+
+| Feature | Details |
+|---|---|
+| 📅 **Monthly Sales Trends** | Line chart tracking revenue over 12 months |
+| 🎯 **Category Breakdown** | Pie & bar charts by product category |
+| 🌏 **Regional Analysis** | Sales performance across US regions |
+| 👤 **Customer Segments** | Consumer vs Corporate vs Home Office |
+| 📦 **Top Products** | Best & worst performing SKUs |
+| 💸 **Profit Margins** | Profit vs discount analysis |
+| 🛣️ **Shipping Analysis** | Delivery modes & efficiency |
+
+## 🛠️ Tech Stack
+
+```python
+tech_stack = {
+    "Data Processing" : ["Python", "Pandas", "NumPy"],
+    "Visualization"   : ["Plotly", "Matplotlib"],
+    "Frontend"        : ["HTML5", "CSS3", "JavaScript"],
+    "Deployment"      : ["GitHub Pages"],
+    "Dataset"         : ["9,353 rows × 21 columns"]
+}
+```
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repo
+git clone https://github.com/jyotheeswar012-max/techmart-dashboard-2025.git
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Open dashboard
+open docs/index.html
+```
+
+## 🔗 Live Demo
+
 👉 **[View Live Dashboard](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/docs/)**
 
 ---
 
-## 📊 What's Inside
+<div align="center">
 
-| Chart | Insight |
-|---|---|
-| 📈 Monthly Sales & Profit | Revenue trends across 12 months |
-| 📉 Month-over-Month Growth | % change each month |
-| 📦 Quarterly Performance | Q1–Q4 sales breakdown |
-| 🏷️ Category Sales | Top 7 product categories |
-| 🌍 Regional Distribution | Central, East, South, West |
-| 👥 Customer Segments | Consumer, Corporate, Home Office |
-| 💳 Payment Methods | Credit, Debit, PayPal, Apple Pay & more |
-| 👤 Age Group Analysis | Sales by customer age bracket |
-| 🏆 Customer Tier | Bronze, Silver, Gold, Platinum |
-| 📦 Top 10 Products | Best-selling items by revenue |
-| 📅 Weekday Trends | Sales patterns by day of week |
-| 🚚 Shipping Mode | Standard, Second, First, Same Day |
+**⭐ If you found this useful, please give it a star! ⭐**
 
----
+[![GitHub stars](https://img.shields.io/github/stars/jyotheeswar012-max/techmart-dashboard-2025?style=social)](https://github.com/jyotheeswar012-max/techmart-dashboard-2025)
 
-## 🛠️ Tech Stack
+Made with ❤️ by [Jyotheeswar Reddy](https://github.com/jyotheeswar012-max)
 
-| Tool | Version | Purpose |
-|------|---------|--------|
-| Python | 3.9+ | Data processing & analysis |
-| Pandas | 1.3+ | Data manipulation |
-| NumPy | 1.21+ | Numerical operations |
-| Plotly | 5.x | Interactive visualizations |
-| HTML/CSS/JS | — | Dashboard layout & styling |
-
----
-
-## 📁 Project Structure
-
-```
-techmart-dashboard-2025/
-├── 📂 docs/
-│   └── index.html          ← Live dashboard (GitHub Pages)
-├── 📂 data/
-│   └── superstore_2025_full.csv  ← Dataset (9,353 rows × 27 columns)
-├── requirements.txt
-├── LICENSE
-└── README.md
-```
-
----
-
-## 📌 Key Metrics
-
-- 💰 **Total Revenue:** $5,311,299.06
-- 📈 **Total Profit:** $1,678,062.58
-- 🧾 **Transactions:** 9,353
-- 👤 **Unique Customers:** 1,198
-- 📦 **Product Categories:** 7
-- 🌍 **Regions:** 4 (Central, East, South, West)
-- 💳 **Payment Methods:** 6
-
----
-
-## 👤 Author
-
-**Jyotheeswar Reddy**  
-🎓 Manipal University, Jaipur  
-📧 jyotheeswar0802@gmail.com  
-🐙 [@jyotheeswar012-max](https://github.com/jyotheeswar012-max)  
-
----
-
-*© 2025 Jyotheeswar Reddy · MIT License*
+</div>
