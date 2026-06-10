@@ -34,35 +34,35 @@
 
 ### Overview Tab — KPI Header & Monthly Trend
 
-![Overview — KPI header, 8 metric cards, Monthly Sales & Profit dual-axis chart](docs/screenshots/01-overview-hero.jpg)
+![Overview — KPI header, 8 metric cards, Monthly Sales & Profit dual-axis chart](https://github.com/user-attachments/assets/ef86d4e7-2f35-40ba-aabb-2f0d464819ec)
 
 ### Overview Tab — Growth, Quarterly & Regional Breakdown
 
-![Overview — MoM Revenue Growth %, Quarterly Performance, Revenue by Region, Customer Segment Split](docs/screenshots/02-overview-bottom.jpg)
+![Overview — MoM Revenue Growth %, Quarterly Performance, Revenue by Region, Customer Segment Split](https://github.com/user-attachments/assets/b7fd8183-bff6-4a40-8fe0-d72f06d39ad2)
 
 ### Products & Categories — Revenue, Margin & Top 10
 
-![Products — Category Revenue vs Profit grouped bar, Profit Margin % by Category with avg line, Top 10 Products horizontal bar](docs/screenshots/03-products-categories.jpg)
+![Products — Category Revenue vs Profit grouped bar, Profit Margin % by Category with avg line, Top 10 Products horizontal bar](https://github.com/user-attachments/assets/094ea927-bbb7-4ee2-86e5-6a69352c1ec7)
 
 ### Products — Discount Impact & Category Treemap
 
-![Products — Discount Bracket Sales & Margin Impact dual-axis chart, Category Revenue Share Treemap](docs/screenshots/04-discount-treemap.jpg)
+![Products — Discount Bracket Sales & Margin Impact dual-axis chart, Category Revenue Share Treemap](https://github.com/user-attachments/assets/55a16b0f-aff4-496f-a3f7-6b8e4c1f29f8)
 
 ### Customers Tab — Age Groups, Payments & Loyalty
 
-![Customers — Revenue & Profit by Age Group, Payment Method Usage, Loyalty Tier Donut, Segment Revenue vs Profit Bubble](docs/screenshots/05-customers.jpg)
+![Customers — Revenue & Profit by Age Group, Payment Method Usage, Loyalty Tier Donut, Segment Revenue vs Profit Bubble](https://github.com/user-attachments/assets/82cd6e69-9330-411c-ac2e-1f322bd5c9f9)
 
 ### Operations Tab — Day of Week, Shipping & Cumulative YTD
 
-![Operations — Sales by Day of Week (weekend peak highlighted), Shipping Mode Analysis, Revenue by Region Donut, Cumulative Revenue YTD vs Target](docs/screenshots/06-operations.jpg)
+![Operations — Sales by Day of Week (weekend peak highlighted), Shipping Mode Analysis, Revenue by Region Donut, Cumulative Revenue YTD vs Target](https://github.com/user-attachments/assets/81ee0891-d612-4bdb-a9d8-e8e00bde38b6)
 
 ### Scenario Analysis Engine — Live What-If Sliders
 
-![Scenario Analysis — 4 interactive sliders, projected KPI cards updating in real time, Scenario vs Baseline bar chart, Sensitivity line chart](docs/screenshots/07-scenario-engine.jpg)
+![Scenario Analysis — 4 interactive sliders, projected KPI cards updating in real time, Scenario vs Baseline bar chart, Sensitivity line chart](https://github.com/user-attachments/assets/9061fcc6-eb21-452d-953d-eb22cf80164a)
 
 ### Key Insights Tab — Business Narrative & Analytics
 
-![Key Insights — 6 insight cards with business recommendations, Revenue Concentration Pareto chart, Profit Margin Heatmap by Category & Region](docs/screenshots/08-key-insights.jpg)
+![Key Insights — 6 insight cards with business recommendations, Revenue Concentration Pareto chart, Profit Margin Heatmap by Category & Region](https://github.com/user-attachments/assets/cdbaf2e6-b7b4-4c5c-9fec-c294abe090de)
 
 ---
 
@@ -98,23 +98,21 @@ techmart-dashboard-2025/
 ├── index.html                   # ✅ GitHub Pages root (full dashboard)
 ├── docs/
 │   ├── index.html               # Mirror copy for /docs Pages config
-│   └── screenshots/             # Dashboard screenshots (8 images)
+│   └── screenshots/             # Dashboard screenshots
 ├── pipeline/
 │   ├── __init__.py
-│   └── fetch_data.py            # Automated pipeline (see setup below)
+│   └── fetch_data.py            # Automated pipeline
 ├── tests/
 │   ├── __init__.py
 │   ├── test_metrics.py          # 13 unit tests
 │   └── test_pipeline_integration.py  # 5 integration tests
 ├── data/                        # Pipeline outputs (auto-generated)
-│   ├── market_context.csv       # SPY/QQQ/XRT daily closes
-│   ├── fx_rates.csv             # USD exchange rates
-│   ├── kpi_summary.json         # Aggregated KPIs (JSON)
+│   ├── market_context.csv
+│   ├── fx_rates.csv
+│   ├── kpi_summary.json
 │   └── superstore_snapshot_YYYYMMDD.csv
 ├── .github/workflows/
 │   └── pipeline.yml             # Daily cron at 06:00 UTC
-├── scenario_analysis/
-│   └── README.md
 ├── superstore_2025_full.csv     # Source dataset (9,353 rows)
 ├── requirements.txt
 ├── LICENSE
@@ -134,8 +132,6 @@ The `OXR_APP_ID` variable is **100% optional** (FX rate enrichment only).
 git clone https://github.com/jyotheeswar012-max/techmart-dashboard-2025.git
 cd techmart-dashboard-2025
 pip install -r requirements.txt
-
-# Run the full pipeline — works immediately, no setup required
 python pipeline/fetch_data.py
 ```
 
@@ -151,52 +147,20 @@ python pipeline/fetch_data.py
 ### Optional: Enable FX Rate Enrichment
 
 ```bash
-# 1. Sign up free (no credit card) at https://openexchangerates.org
-# 2. Copy your App ID, then:
-export OXR_APP_ID="your_app_id_here"   # Mac/Linux
-set    OXR_APP_ID=your_app_id_here     # Windows CMD
-
-# Now the FX step will also run:
+export OXR_APP_ID="your_app_id_here"
 python pipeline/fetch_data.py
 ```
 
 ### CLI flags
 
 ```bash
-# Validate everything without writing any files
 python pipeline/fetch_data.py --dry-run
-
-# Change the market data lookback window
 python pipeline/fetch_data.py --period 3mo
-
-# Combine flags
-python pipeline/fetch_data.py --dry-run --period 1y
-```
-
-### Expected output
-
-```
-=======================================================
-  TechMart Data Pipeline — 2026-06-10 12:30 UTC
-  Mode: LIVE
-=======================================================
-2026-06-10 12:30:01  INFO      Fetching market data for: ['SPY', 'QQQ', 'XRT'] (period=1mo)
-2026-06-10 12:30:03  INFO      Saved → data/market_context.csv  (22 rows)
-2026-06-10 12:30:03  INFO      OXR_APP_ID not set — skipping FX fetch (optional enrichment).
-2026-06-10 12:30:03  INFO      Reading source CSV: superstore_2025_full.csv
-2026-06-10 12:30:04  INFO      Loaded 9,353 rows × 22 columns
-2026-06-10 12:30:04  INFO      Snapshot saved → data/superstore_snapshot_20260610.csv
-2026-06-10 12:30:04  INFO      KPIs → Revenue: $5,311,299 | Profit: $1,677,063 | Margin: 31.6%
-2026-06-10 12:30:04  INFO      KPI summary saved → data/kpi_summary.json
-=======================================================
-  Pipeline SUCCESS
-=======================================================
 ```
 
 ### Automated via GitHub Actions
 
-The pipeline runs **daily at 06:00 UTC** via `.github/workflows/pipeline.yml`.
-Outputs are committed back to `data/` automatically.
+Runs **daily at 06:00 UTC** via `.github/workflows/pipeline.yml`.
 Check run history: [Actions tab →](https://github.com/jyotheeswar012-max/techmart-dashboard-2025/actions)
 
 ---
@@ -205,15 +169,9 @@ Check run history: [Actions tab →](https://github.com/jyotheeswar012-max/techm
 
 ```bash
 pip install -r requirements.txt
-
-# Run all 18 tests
 pytest tests/ -v
-
-# With coverage report
 pytest tests/ -v --cov=pipeline --cov-report=term-missing
 ```
-
-**Test coverage:**
 
 | Test file | Cases | Covers |
 |---|---|---|
