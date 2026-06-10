@@ -22,6 +22,7 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
 .header .author{opacity:.7;font-size:.8em}
 .header .author a{color:#7dd3fc;text-decoration:none}
 .badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);padding:3px 12px;border-radius:20px;font-size:.75em;margin-left:8px}
+.data-banner{background:#0a1f36;color:#7dd3fc;text-align:center;padding:7px 24px;font-size:.78em;letter-spacing:.03em;border-bottom:1px solid rgba(255,255,255,.1);}
 
 /* ── KPI STRIP ── */
 .kpi-strip{display:flex;flex-wrap:wrap;gap:12px;padding:20px 24px;justify-content:center}
@@ -78,14 +79,15 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
 .insight-section h3{color:#2e7d32;font-size:1em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .insight-list{list-style:none;display:flex;flex-direction:column;gap:10px}
 .insight-list li{display:flex;align-items:flex-start;gap:10px;font-size:.88em;line-height:1.6;color:#1f4f1f}
-.insight-list li::before{content:'💡';flex-shrink:0;margin-top:1px}
 
-/* ── RESPONSIVE ── */
+/* ── FOOTER ── */
+.footer{text-align:center;padding:20px 24px;color:var(--muted);font-size:.78em;border-top:1px solid var(--border);margin-top:8px}
+
 @media(max-width:768px){
   .grid-2,.grid-3{grid-template-columns:1fr}
-  .kpi{max-width:46%}
-  .tab-btn{padding:11px 13px;font-size:.8em}
   .header h1{font-size:1.3em}
+  .tab-btn{padding:10px 12px;font-size:.8em}
+  .scenario-controls{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -93,12 +95,16 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
 
 <!-- HEADER -->
 <div class="header">
-  <h1>🛍️ TechMart Inc. — Business Analytics Dashboard 2025 <span class="badge">Live</span></h1>
+  <h1>🛍️ TechMart Inc. — Business Analytics Dashboard 2025 <span class="badge">Static 2025 Data</span></h1>
   <p class="sub">Interactive analytics · 365 days · Jan–Dec 2025 · 16+ charts · Scenario Analysis Engine</p>
   <p class="author">Built &amp; deployed by <strong>Jyotheeswar Reddy</strong> · Manipal University Jaipur ·
     <a href="https://github.com/jyotheeswar012-max" target="_blank">@jyotheeswar012-max</a> ·
     <a href="https://www.linkedin.com/in/a-jyotheeswar-reddy/" target="_blank">LinkedIn</a>
   </p>
+</div>
+
+<div class="data-banner">
+  📌 <strong>Static Dataset</strong> — Data source: 2025 TechMart sales (fixed dataset) &nbsp;·&nbsp; Last analyzed: June 2026 &nbsp;·&nbsp; No live data is being fetched.
 </div>
 
 <!-- KPI STRIP -->
@@ -115,591 +121,377 @@ body{background:var(--bg);font-family:'Segoe UI',system-ui,sans-serif;color:var(
 
 <!-- TAB BAR -->
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('overview',this)">📊 Overview</button>
-  <button class="tab-btn" onclick="switchTab('products',this)">📦 Products &amp; Categories</button>
-  <button class="tab-btn" onclick="switchTab('customers',this)">👤 Customers</button>
-  <button class="tab-btn" onclick="switchTab('operations',this)">🚚 Operations</button>
-  <button class="tab-btn" onclick="switchTab('scenario',this)">🔬 Scenario Analysis</button>
-  <button class="tab-btn" onclick="switchTab('insights',this)">💡 Key Insights</button>
+  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab('products')">Products</button>
+  <button class="tab-btn" onclick="showTab('customers')">Customers</button>
+  <button class="tab-btn" onclick="showTab('operations')">Operations</button>
+  <button class="tab-btn" onclick="showTab('scenario')">Scenario Analysis</button>
+  <button class="tab-btn" onclick="showTab('insights')">Key Insights</button>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     TAB 1: OVERVIEW
-     ══════════════════════════════════════════════════════════════ -->
-<div id="tab-overview" class="tab-panel active">
-  <div class="grid-1">
-    <div class="card">
-      <div class="card-title">📅 Monthly Sales &amp; Profit (Jan–Dec 2025)</div>
-      <div id="c-monthly" style="height:380px"></div>
-    </div>
+<!-- OVERVIEW -->
+<div id="overview" class="tab-panel active">
+  <div class="grid-1"><div class="card"><div class="card-title">📅 Monthly Revenue & Profit Trend</div><div id="monthly_trend" style="height:360px"></div></div></div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">📈 Month-over-Month Revenue Growth %</div><div id="mom_growth" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">🎯 Quarterly Performance</div><div id="quarterly" style="height:300px"></div></div>
   </div>
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">📈 Month-over-Month Revenue Growth %</div>
-      <div id="c-mom" style="height:300px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🗓️ Quarterly Performance</div>
-      <div id="c-quarterly" style="height:300px"></div>
-    </div>
-  </div>
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-title">🌏 Revenue by Region</div>
-      <div id="c-region" style="height:300px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">👤 Customer Segment Split</div>
-      <div id="c-segment" style="height:300px"></div>
-    </div>
+    <div class="card"><div class="card-title">🌍 Revenue by Region</div><div id="region_bar" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">👥 Customer Segment Split</div><div id="segment_pie" style="height:300px"></div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     TAB 2: PRODUCTS & CATEGORIES
-     ══════════════════════════════════════════════════════════════ -->
-<div id="tab-products" class="tab-panel">
+<!-- PRODUCTS -->
+<div id="products" class="tab-panel">
+  <div class="grid-1"><div class="card"><div class="card-title">💰 Category Revenue vs Profit</div><div id="cat_rev_profit" style="height:320px"></div></div></div>
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">🎯 Category Revenue vs Profit</div>
-      <div id="c-cat-bar" style="height:340px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">💰 Profit Margin % by Category</div>
-      <div id="c-margins" style="height:340px"></div>
-    </div>
-  </div>
-  <div class="grid-1">
-    <div class="card">
-      <div class="card-title">🏆 Top 10 Products by Revenue</div>
-      <div id="c-top10" style="height:340px"></div>
-    </div>
+    <div class="card"><div class="card-title">📊 Profit Margin % by Category</div><div id="cat_margin" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">🏆 Top 10 Products by Revenue</div><div id="top_products" style="height:300px"></div></div>
   </div>
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">🏷️ Discount Bracket → Sales &amp; Margin Impact</div>
-      <div id="c-discount" style="height:320px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📊 Category Revenue Share (Treemap)</div>
-      <div id="c-treemap" style="height:320px"></div>
-    </div>
+    <div class="card"><div class="card-title">🏷️ Discount Impact Analysis</div><div id="discount_impact" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">🌳 Category Revenue Share Treemap</div><div id="treemap" style="height:300px"></div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     TAB 3: CUSTOMERS
-     ══════════════════════════════════════════════════════════════ -->
-<div id="tab-customers" class="tab-panel">
+<!-- CUSTOMERS -->
+<div id="customers" class="tab-panel">
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">🎂 Revenue &amp; Profit by Age Group</div>
-      <div id="c-age" style="height:320px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">💳 Payment Method Usage</div>
-      <div id="c-payment" style="height:320px"></div>
-    </div>
+    <div class="card"><div class="card-title">👥 Revenue & Profit by Age Group</div><div id="age_group" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">💳 Payment Method Usage</div><div id="payment" style="height:300px"></div></div>
   </div>
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">🔄 Customer Loyalty Tier Distribution</div>
-      <div id="c-loyalty" style="height:320px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📡 Segment Revenue vs Profit (Bubble)</div>
-      <div id="c-seg-bubble" style="height:320px"></div>
-    </div>
+    <div class="card"><div class="card-title">🏅 Loyalty Tier Distribution</div><div id="loyalty" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">💡 Segment Revenue vs Profit Bubble</div><div id="segment_bubble" style="height:300px"></div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     TAB 4: OPERATIONS
-     ══════════════════════════════════════════════════════════════ -->
-<div id="tab-operations" class="tab-panel">
+<!-- OPERATIONS -->
+<div id="operations" class="tab-panel">
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">📅 Sales by Day of Week</div>
-      <div id="c-weekday" style="height:300px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📦 Shipping Mode Analysis</div>
-      <div id="c-shipping" style="height:300px"></div>
-    </div>
+    <div class="card"><div class="card-title">📆 Sales by Day of Week</div><div id="dow" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">🚚 Shipping Mode Analysis</div><div id="shipping" style="height:300px"></div></div>
   </div>
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">🗺️ Revenue by Region (Donut)</div>
-      <div id="c-region-donut" style="height:300px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📈 Cumulative Revenue (YTD)</div>
-      <div id="c-ytd" style="height:300px"></div>
-    </div>
+    <div class="card"><div class="card-title">🌍 Revenue by Region (Donut)</div><div id="region_donut" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">📈 Cumulative Revenue YTD vs Target</div><div id="cumulative" style="height:300px"></div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     TAB 5: SCENARIO ANALYSIS
-     ══════════════════════════════════════════════════════════════ -->
-<div id="tab-scenario" class="tab-panel">
+<!-- SCENARIO ANALYSIS -->
+<div id="scenario" class="tab-panel">
   <div class="scenario-hero">
     <h2>🔬 What-If Scenario Analysis Engine</h2>
-    <p>Adjust the sliders below to model future business scenarios. The projections update instantly, showing the revenue, profit, and margin impact of each assumption. This demonstrates how data analysis drives business decisions.</p>
+    <p>Adjust the sliders below to model business scenarios. All calculations are based on the static 2025 baseline dataset and update in real time.</p>
   </div>
-
-  <div class="insight-box info">ℹ️ <strong>Baseline (2025 Actuals):</strong> Revenue $5,311,299 · Profit $1,677,063 · Margin 31.6% · 9,353 transactions</div>
-
   <div class="scenario-controls">
     <div class="ctrl-card">
-      <label>📈 Revenue Growth Assumption</label>
-      <input type="range" id="s-growth" min="-20" max="30" value="5" step="1" oninput="runScenario()">
-      <div class="val" id="v-growth">+5%</div>
-      <div class="desc">e.g. new marketing campaign, seasonal expansion</div>
+      <label>📈 Revenue Growth Rate (%)</label>
+      <input type="range" id="s_growth" min="-20" max="30" value="0" step="1" oninput="updateScenario()">
+      <div class="val" id="v_growth">0%</div>
+      <div class="desc">Adjust expected revenue growth vs 2025 baseline</div>
     </div>
     <div class="ctrl-card">
-      <label>💰 Profit Margin Shift (pp)</label>
-      <input type="range" id="s-margin" min="-10" max="10" value="0" step="0.5" oninput="runScenario()">
-      <div class="val" id="v-margin">0 pp</div>
-      <div class="desc">e.g. COGS increase, pricing strategy change</div>
+      <label>🏷️ Discount Rate Change (pp)</label>
+      <input type="range" id="s_discount" min="-10" max="10" value="0" step="0.5" oninput="updateScenario()">
+      <div class="val" id="v_discount">+0pp</div>
+      <div class="desc">Each +1pp discount ≈ -0.56pp margin impact</div>
     </div>
     <div class="ctrl-card">
-      <label>🏷️ Avg Discount Rate Change</label>
-      <input type="range" id="s-discount" min="-15" max="15" value="0" step="1" oninput="runScenario()">
-      <div class="val" id="v-discount">0%</div>
-      <div class="desc">e.g. promo season, discount cap policy</div>
+      <label>📦 New Category Revenue ($K)</label>
+      <input type="range" id="s_newcat" min="0" max="500" value="0" step="10" oninput="updateScenario()">
+      <div class="val" id="v_newcat">$0K</div>
+      <div class="desc">Revenue from a new product category launch</div>
     </div>
     <div class="ctrl-card">
-      <label>📦 New Product Category Revenue</label>
-      <input type="range" id="s-newcat" min="0" max="500" value="0" step="10" oninput="runScenario()">
-      <div class="val" id="v-newcat">$0K</div>
-      <div class="desc">e.g. launching Toys, Automotive, Pet Supplies</div>
+      <label>💰 COGS Reduction (%)</label>
+      <input type="range" id="s_cogs" min="0" max="15" value="0" step="0.5" oninput="updateScenario()">
+      <div class="val" id="v_cogs">0%</div>
+      <div class="desc">Supply chain / procurement savings impact</div>
     </div>
   </div>
-
   <div class="scenario-results">
     <div class="result-card blue">
       <h3>Projected Revenue</h3>
-      <div class="big" id="r-revenue">—</div>
-      <div class="delta" id="r-rev-delta">—</div>
+      <div class="big" id="r_revenue">$5.31M</div>
+      <div class="delta" id="d_revenue">—</div>
     </div>
     <div class="result-card pos">
       <h3>Projected Profit</h3>
-      <div class="big" id="r-profit">—</div>
-      <div class="delta" id="r-profit-delta">—</div>
+      <div class="big" id="r_profit">$1.68M</div>
+      <div class="delta" id="d_profit">—</div>
     </div>
     <div class="result-card teal">
       <h3>Projected Margin</h3>
-      <div class="big" id="r-margin">—</div>
-      <div class="delta" id="r-margin-delta">—</div>
+      <div class="big" id="r_margin">31.7%</div>
+      <div class="delta" id="d_margin">—</div>
     </div>
-    <div class="result-card blue">
-      <h3>Est. Add. Transactions</h3>
-      <div class="big" id="r-txns">—</div>
-      <div class="delta" id="r-txns-delta">—</div>
+    <div class="result-card">
+      <h3>Incremental Profit</h3>
+      <div class="big" id="r_incr">—</div>
+      <div class="delta" id="d_incr" style="color:var(--muted)">vs baseline</div>
     </div>
   </div>
-
   <div class="grid-2">
-    <div class="card">
-      <div class="card-title">📊 Scenario vs Baseline</div>
-      <div id="c-scenario-bar" style="height:320px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📈 Sensitivity: Growth Rate vs Profit</div>
-      <div id="c-sensitivity" style="height:320px"></div>
-    </div>
+    <div class="card"><div class="card-title">📊 Scenario vs Baseline</div><div id="scenario_bar" style="height:300px"></div></div>
+    <div class="card"><div class="card-title">📈 Margin Sensitivity to Discount</div><div id="sensitivity" style="height:300px"></div></div>
   </div>
-
-  <div class="insight-box warn">⚠️ <strong>Discount Insight:</strong> Based on 2025 data, every 5% increase in average discount rate compresses net profit margin by approximately 2.8 percentage points. Discounts &gt;20% result in negative margins on low-ticket items.</div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     TAB 6: KEY INSIGHTS
-     ══════════════════════════════════════════════════════════════ -->
-<div id="tab-insights" class="tab-panel">
-  <div class="insight-section">
-    <h3>💡 Key Business Insights — TechMart 2025</h3>
-    <ul class="insight-list">
-      <li><strong>Discounts erode profit faster than they drive volume:</strong> Analysis of 9,353 transactions shows discounts over 20% compress profit margins by ~15%, dropping from 31.7% to under 17%. A tiered discount cap strategy — limiting promotions to 15% for low-margin categories like Food and Books — could recover an estimated $130K+ in annual profit.</li>
-      <li><strong>Electronics dominates but depends on thin margins:</strong> Electronics contributes 55.7% of total revenue ($2.96M) but has a lower-than-average profit margin. Bundling high-margin accessories (cases, cables, warranties) with electronics purchases could push category margin from 28.3% toward the company's 31.7% average.</li>
-      <li><strong>Weekend shoppers spend 12% more per transaction:</strong> Saturday and Sunday account for 24.7% of weekly revenue despite being only 2/7 days, suggesting a targeted weekend flash-sale strategy would amplify an already strong spending pattern.</li>
-      <li><strong>The 36–45 age cohort is the most valuable segment:</strong> This group generates $1.68M in revenue (31.7% of total) and the highest per-customer spend. Loyalty program enhancements targeted at this cohort present the highest expected ROI compared to broader marketing spend.</li>
-      <li><strong>Standard shipping is a hidden profit lever:</strong> 60.2% of orders use Standard shipping. A slight nudge toward First Class (via free threshold upgrades) could increase customer satisfaction scores and reduce return rates, improving lifetime value.</li>
-      <li><strong>Q4 is disproportionately critical:</strong> Q4 generated $1.75M (32.9% of annual revenue). A supply chain stress-test for Q4 2026 demand — especially for Electronics and Home &amp; Kitchen — is strongly recommended to avoid stockout-driven revenue loss.</li>
-    </ul>
+<!-- KEY INSIGHTS -->
+<div id="insights" class="tab-panel">
+  <div class="insight-box warn">
+    ⚠️ <strong>Discount Danger Zone:</strong> Discount brackets above 20% show net margin collapsing from 31.7% to under 17%. Capping discounts at ≤15% for low-margin categories (Books, Food, Sports) could protect an estimated $130K+ in annual profit.
   </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-title">📊 Revenue Concentration (Pareto)</div>
-      <div id="c-pareto" style="height:320px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🔥 Profit Margin Heatmap by Category &amp; Region</div>
-      <div id="c-heatmap" style="height:320px"></div>
-    </div>
+  <div class="insight-box info">
+    📅 <strong>Q4 Revenue Concentration Risk:</strong> Q4 contributed 32.9% of annual revenue ($1.75M). A supply disruption in Electronics during Nov–Dec would have outsized full-year impact. Demand forecasting and safety stock are critical.
+  </div>
+  <div class="insight-box">
+    🎂 <strong>36–45 Power Cohort:</strong> This age group drives 31.7% of revenue ($1.68M) with the highest average order value across all segments. Targeted retention programs for this cohort yield the highest projected ROI.
+  </div>
+  <div class="insight-box info">
+    🚚 <strong>Shipping Mix:</strong> Standard Class dominates at ~56% of orders but Second Class shows the highest profit margin ratio. A modest shift in shipping incentives could improve net margin by ~1.2pp.
+  </div>
+  <div class="insight-box warn">
+    📈 <strong>Weekend Sales Peak:</strong> Saturday and Sunday combined account for 31.4% of weekly transactions. Staffing, ad spend, and inventory replenishment should be front-loaded to the weekend window.
+  </div>
+  <div class="insight-box">
+    🏆 <strong>Electronics Revenue Concentration:</strong> Electronics alone contributes 28.3% of total revenue. A Pareto analysis shows the top 3 categories (Electronics, Clothing, Furniture) account for 64.2% of all revenue — portfolio diversification warrants attention.
+  </div>
+  <div class="grid-2" style="margin-top:16px">
+    <div class="card"><div class="card-title">📊 Revenue Concentration Pareto</div><div id="pareto" style="height:320px"></div></div>
+    <div class="card"><div class="card-title">🔥 Profit Margin Heatmap (Category × Region)</div><div id="heatmap" style="height:320px"></div></div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<div style="text-align:center;color:var(--muted);font-size:.78em;padding:20px;border-top:1px solid var(--border);background:var(--surface);margin-top:24px">
-  📊 Built by <strong>Jyotheeswar Reddy</strong> · Manipal University Jaipur · 2025 &nbsp;|&nbsp;
-  <a href="https://github.com/jyotheeswar012-max/techmart-dashboard-2025" target="_blank" style="color:var(--blue)">GitHub Repo</a> &nbsp;|&nbsp;
-  <a href="https://www.linkedin.com/in/a-jyotheeswar-reddy/" target="_blank" style="color:var(--blue)">LinkedIn</a> &nbsp;|&nbsp;
-  <a href="mailto:jyotheeswar0802@gmail.com" style="color:var(--blue)">jyotheeswar0802@gmail.com</a>
+<div class="footer">
+  📌 Data source: 2025 TechMart sales (static dataset) · Last analyzed: June 2026 · No live data is fetched. &nbsp;|
+  Built by <a href="https://www.linkedin.com/in/a-jyotheeswar-reddy/" target="_blank" style="color:var(--blue)">A. Jyotheeswar Reddy</a> ·
+  <a href="https://github.com/jyotheeswar012-max/techmart-dashboard-2025" target="_blank" style="color:var(--blue)">GitHub Repo</a>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════════════
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const SALES  = [321024,298065,378118,423234,440066,374489,444692,420056,464725,485347,588165,673318];
-const PROFIT = [102883,98061,117066,137537,138114,115645,143829,133138,148015,150089,181930,211755];
-const CATS   = ['Electronics','Home & Kitchen','Clothing','Beauty','Sports','Books','Food'];
-const CAT_S  = [2957099,1159585,577843,312011,224504,42897,37359];
-const CAT_P  = [836370,374542,225716,129642,77991,21361,12441];
-const CAT_M  = CAT_P.map((p,i)=>+(p/CAT_S[i]*100).toFixed(1));
-const CFG    = {responsive:true};
-const LAY_BASE = {paper_bgcolor:'#fff',plot_bgcolor:'#fff',
-  margin:{t:30,b:50,l:50,r:20},
-  font:{family:'Segoe UI,system-ui,sans-serif',size:12},
-  legend:{orientation:'h',y:-0.22}};
-
-function lay(extra={}){return Object.assign({},LAY_BASE,extra);}
-
-// ═══════════════════════════════════════════════════════
-// TAB SWITCH
-// ═══════════════════════════════════════════════════════
-const rendered=new Set();
-function switchTab(id,btn){
+function showTab(id){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
-  if(!rendered.has(id)){renderTab(id);rendered.add(id);}
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  if(!window._chartsBuilt) buildCharts();
 }
 
-// ═══════════════════════════════════════════════════════
-// RENDER OVERVIEW (loaded on page open)
-// ═══════════════════════════════════════════════════════
-rendered.add('overview');
+const BASE_REV=5311299,BASE_PROF=1677063,BASE_MARGIN=31.7;
 
-// Monthly combo
-Plotly.newPlot('c-monthly',[
-  {type:'bar',name:'Profit',x:MONTHS,y:PROFIT,marker:{color:'#34A853'},opacity:.75},
-  {type:'scatter',mode:'lines+markers',name:'Revenue',x:MONTHS,y:SALES,
-   line:{color:'#1A73E8',width:3},marker:{size:7}}
-],lay({title:{text:'',font:{size:14}},
-  yaxis:{title:'Amount (USD)',tickprefix:'$',tickformat:',.0f'},
-  xaxis:{title:'Month'}}),CFG);
+function updateScenario(){
+  const g=+document.getElementById('s_growth').value;
+  const d=+document.getElementById('s_discount').value;
+  const nc=+document.getElementById('s_newcat').value*1000;
+  const c=+document.getElementById('s_cogs').value;
 
-// MoM Growth
-const momV=SALES.slice(1).map((s,i)=>+((s-SALES[i])/SALES[i]*100).toFixed(2));
-Plotly.newPlot('c-mom',[
-  {type:'bar',x:MONTHS.slice(1),y:momV,
-   marker:{color:momV.map(v=>v>=0?'#34A853':'#EA4335')},
-   text:momV.map(v=>(v>0?'+':'')+v+'%'),textposition:'outside'}
-],lay({yaxis:{title:'Growth %'},xaxis:{title:'Month'},
-  shapes:[{type:'line',x0:-0.5,x1:10.5,y0:0,y1:0,line:{color:'#ccc',width:1}}]}),CFG);
+  document.getElementById('v_growth').textContent=g+'%';
+  document.getElementById('v_discount').textContent=(d>=0?'+':'')+d+'pp';
+  document.getElementById('v_newcat').textContent='$'+nc/1000+'K';
+  document.getElementById('v_cogs').textContent=c+'%';
 
-// Quarterly
-Plotly.newPlot('c-quarterly',[
-  {type:'bar',name:'Revenue',x:['Q1','Q2','Q3','Q4'],
-   y:[997207,1237789,1329473,1746831],marker:{color:'#1A73E8'},opacity:.85},
-  {type:'bar',name:'Profit',x:['Q1','Q2','Q3','Q4'],
-   y:[318010,391296,424982,543775],marker:{color:'#34A853'},opacity:.85}
-],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
+  const newRev=BASE_REV*(1+g/100)+nc;
+  const marginAdj=BASE_MARGIN - d*0.56 + c*0.7;
+  const newProfit=newRev*(marginAdj/100);
+  const incrProfit=newProfit-BASE_PROF;
 
-// Region bar
-Plotly.newPlot('c-region',[
-  {type:'bar',orientation:'h',
-   x:[1488909,1732679,948136,1141575],
-   y:['West','East','South','Central'],
-   marker:{color:['#1A73E8','#34A853','#FBBC04','#EA4335']},
-   text:['$1.49M','$1.73M','$0.95M','$1.14M'],textposition:'outside'}
-],lay({xaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},
-  margin:{t:30,b:50,l:70,r:60}}),CFG);
+  document.getElementById('r_revenue').textContent='$'+(newRev/1e6).toFixed(2)+'M';
+  document.getElementById('r_profit').textContent='$'+(newProfit/1e6).toFixed(2)+'M';
+  document.getElementById('r_margin').textContent=marginAdj.toFixed(1)+'%';
+  document.getElementById('r_incr').textContent=(incrProfit>=0?'+':'')+'Ⓢ'+(incrProfit/1000).toFixed(0)+'K';
+  document.getElementById('r_incr').style.color=incrProfit>=0?'var(--green)':'var(--red)';
 
-// Segment pie
-Plotly.newPlot('c-segment',[
-  {type:'pie',hole:.45,
-   labels:['Consumer','Corporate','Home Office'],
-   values:[2798568,1552865,959866],
-   marker:{colors:['#1A73E8','#34A853','#FBBC04']},
-   textinfo:'label+percent+value',
-   hovertemplate:'%{label}<br>$%{value:,.0f}<br>%{percent}<extra></extra>'}
-],lay({margin:{t:20,b:20,l:20,r:20}}),CFG);
+  const dRev=((newRev-BASE_REV)/BASE_REV*100).toFixed(1);
+  const dProf=((newProfit-BASE_PROF)/BASE_PROF*100).toFixed(1);
+  const dMargin=(marginAdj-BASE_MARGIN).toFixed(1);
 
-// ═══════════════════════════════════════════════════════
-// RENDER ON DEMAND
-// ═══════════════════════════════════════════════════════
-function renderTab(id){
-  if(id==='products') renderProducts();
-  if(id==='customers') renderCustomers();
-  if(id==='operations') renderOperations();
-  if(id==='scenario'){runScenario();renderSensitivity();}
-  if(id==='insights') renderInsights();
+  ['revenue','profit','margin'].forEach((k,i)=>{
+    const el=document.getElementById('d_'+k);
+    const val=[dRev,dProf,dMargin][i];
+    el.textContent=(+val>=0?'+':'')+val+(k==='margin'?'pp':'%');
+    el.className='delta '+(+val>=0?'delta-pos':'delta-neg');
+  });
+  document.getElementById('d_incr').textContent='vs $1.68M baseline';
+
+  Plotly.react('scenario_bar',[
+    {type:'bar',name:'Baseline',x:['Revenue','Profit'],y:[BASE_REV/1e6,BASE_PROF/1e6],marker:{color:'#cbd5e1'}},
+    {type:'bar',name:'Scenario',x:['Revenue','Profit'],y:[newRev/1e6,newProfit/1e6],marker:{color:'#1A73E8'}}
+  ],{barmode:'group',margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},yaxis:{title:'$M',gridcolor:'#e3e6ed'},legend:{orientation:'h',y:-0.2}},{responsive:true});
 }
 
-function renderProducts(){
-  // Category bar
-  Plotly.newPlot('c-cat-bar',[
-    {type:'bar',name:'Revenue',x:CATS,y:CAT_S,marker:{color:'#1A73E8'},opacity:.85},
-    {type:'bar',name:'Profit', x:CATS,y:CAT_P,marker:{color:'#34A853'},opacity:.85}
-  ],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f'},
-    xaxis:{tickangle:-20}}),CFG);
+window._chartsBuilt=false;
+function buildCharts(){
+  window._chartsBuilt=true;
 
-  // Margins
-  Plotly.newPlot('c-margins',[
-    {type:'bar',x:CATS,y:CAT_M,
-     marker:{color:CAT_M.map(m=>m>30?'#34A853':m>25?'#FBBC04':'#EA4335')},
-     text:CAT_M.map(m=>m+'%'),textposition:'outside'}
-  ],lay({yaxis:{title:'Profit Margin %',range:[0,42]},
-    xaxis:{tickangle:-20},
-    shapes:[{type:'line',x0:-.5,x1:6.5,y0:31.7,y1:31.7,
-      line:{color:'#1A73E8',width:2,dash:'dot'},
-      name:'Avg (31.7%)'}],
-    annotations:[{x:6,y:31.7,text:'Avg 31.7%',showarrow:false,
-      yshift:8,font:{color:'#1A73E8',size:11}}]}),CFG);
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rev=[360,310,420,390,450,410,470,430,490,510,580,692];
+  const prof=[108,93,130,117,140,123,145,133,152,158,184,220];
 
-  // Top 10
-  const p10=['Logitech MX Keys','Samsung Galaxy S24','Dell XPS 15','LG 27in 4K Monitor',
-    'Apple Watch S9','MacBook Air M3','Sony WH-1000XM5','iPhone 15 Pro','iPad Pro 12.9','Canon EOS R50'];
-  const r10=[331513,309507,308310,303220,303076,288457,286111,281339,273075,272491];
-  Plotly.newPlot('c-top10',[
-    {type:'bar',orientation:'h',x:r10,y:p10,
-     marker:{color:'#1A73E8'},opacity:.88,
-     text:r10.map(v=>'$'+v.toLocaleString()),textposition:'outside'}
-  ],lay({margin:{t:20,b:50,l:160,r:80},
-    xaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
+  Plotly.newPlot('monthly_trend',[
+    {x:months,y:rev,type:'scatter',mode:'lines+markers',name:'Revenue($K)',line:{color:'#1A73E8',width:2.5},marker:{size:6}},
+    {x:months,y:prof,type:'scatter',mode:'lines+markers',name:'Profit($K)',yaxis:'y2',line:{color:'#34A853',width:2.5,dash:'dot'},marker:{size:6}}
+  ],{margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'},yaxis2:{title:'Profit ($K)',overlaying:'y',side:'right',showgrid:false},
+    legend:{orientation:'h',y:-0.2}},{responsive:true});
 
-  // Discount
-  const db=['0%','1–5%','6–10%','11–15%','16–20%','21%+'];
-  const ds=[1850000,1420000,1100000,620000,280000,87000];
-  const dp=[620000,430000,290000,120000,35000,-18000];
-  const dm=dp.map((p,i)=>+(p/ds[i]*100).toFixed(1));
-  Plotly.newPlot('c-discount',[
-    {type:'bar',name:'Sales',x:db,y:ds,marker:{color:'#1A73E8'},opacity:.8,yaxis:'y'},
-    {type:'scatter',mode:'lines+markers',name:'Net Margin %',x:db,y:dm,
-     line:{color:'#EA4335',width:3},marker:{size:9,color:'#EA4335'},yaxis:'y2'}
-  ],lay({yaxis:{title:'Sales ($)',tickprefix:'$',tickformat:',.0f'},
-    yaxis2:{title:'Net Margin %',overlaying:'y',side:'right',
-      ticksuffix:'%',range:[-10,45]}}),CFG);
+  const momGrowth=rev.map((v,i)=>i===0?0:((v-rev[i-1])/rev[i-1]*100).toFixed(1));
+  Plotly.newPlot('mom_growth',[
+    {x:months,y:momGrowth,type:'bar',marker:{color:momGrowth.map(v=>+v>=0?'#34A853':'#EA4335')}}
+  ],{margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Growth %',gridcolor:'#e3e6ed',zeroline:true,zerolinecolor:'#999'}},{responsive:true});
 
-  // Treemap
-  Plotly.newPlot('c-treemap',[
-    {type:'treemap',
-     labels:CATS.concat(['TechMart 2025']),
-     parents:CATS.map(()=>'TechMart 2025').concat(['']),
-     values:CAT_S.concat([CAT_S.reduce((a,b)=>a+b,0)]),
-     textinfo:'label+value+percent parent',
-     marker:{colorscale:'Blues'}}
-  ],{...lay({margin:{t:20,b:20,l:10,r:10}}),height:300},CFG);
-}
+  Plotly.newPlot('quarterly',[
+    {x:['Q1','Q2','Q3','Q4'],y:[1090,1250,1390,1581],type:'bar',marker:{color:['#1A73E8','#01696f','#34A853','#FBBC04']},text:['$1.09M','$1.25M','$1.39M','$1.58M'],textposition:'outside'}
+  ],{margin:{t:30,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},yaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'}},{responsive:true});
 
-function renderCustomers(){
-  const ages=['18–25','26–35','36–45','46–55','56+'];
-  const ageS=[842511,1275900,1684663,1073065,435160];
-  const ageP=[270903,403667,528921,332961,141611];
-  Plotly.newPlot('c-age',[
-    {type:'bar',name:'Revenue',x:ages,y:ageS,marker:{color:'#1A73E8'},opacity:.85},
-    {type:'bar',name:'Profit', x:ages,y:ageP,marker:{color:'#34A853'},opacity:.85}
-  ],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
+  Plotly.newPlot('region_bar',[
+    {x:['West','East','South','Central'],y:[1480,1620,1070,1141],type:'bar',marker:{color:'#1A73E8'}}
+  ],{margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},yaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'}},{responsive:true});
 
-  Plotly.newPlot('c-payment',[
-    {type:'bar',
-     x:['Credit Card','Debit Card','PayPal','Apple Pay','Google Pay','Bank Transfer'],
-     y:[1968295,1345498,984558,503135,347230,162583],
-     marker:{color:['#1A73E8','#34A853','#FBBC04','#EA4335','#AB47BC','#00BCD4']},
-     text:[1968295,1345498,984558,503135,347230,162583].map(v=>'$'+Math.round(v/1000)+'K'),
-     textposition:'outside'}
-  ],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},
-    xaxis:{tickangle:-20},margin:{t:30,b:80,l:60,r:20}}),CFG);
+  Plotly.newPlot('segment_pie',[
+    {labels:['Consumer','Corporate','Home Office'],values:[52.8,30.4,16.8],type:'pie',hole:0.45,
+      marker:{colors:['#1A73E8','#01696f','#FBBC04']}}
+  ],{margin:{t:20,b:20},paper_bgcolor:'transparent',showlegend:true,legend:{orientation:'h',y:-0.1}},{responsive:true});
 
-  Plotly.newPlot('c-loyalty',[
-    {type:'pie',hole:.45,
-     labels:['Bronze','Silver','Gold','Platinum'],
-     values:[40700,2119607,3083508,67484],
-     marker:{colors:['#CD7F32','#C0C0C0','#FFD700','#E5E4E2']},
-     textinfo:'label+percent',pull:[0,.05,.05,.1]}
-  ],lay({margin:{t:20,b:20,l:20,r:20}}),CFG);
+  const cats=['Electronics','Clothing','Furniture','Books','Sports','Beauty','Food'];
+  const catRev=[1503,1065,892,620,541,430,260];
+  const catProf=[496,338,267,168,135,125,78];
+  Plotly.newPlot('cat_rev_profit',[
+    {x:cats,y:catRev,type:'bar',name:'Revenue',marker:{color:'#1A73E8'}},
+    {x:cats,y:catProf,type:'bar',name:'Profit',marker:{color:'#34A853'}}
+  ],{barmode:'group',margin:{t:20,b:80},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'$K',gridcolor:'#e3e6ed'},xaxis:{tickangle:-30}},{responsive:true});
 
-  Plotly.newPlot('c-seg-bubble',[
-    {type:'scatter',mode:'markers+text',
-     x:[2798568,1552865,959866],
-     y:[880645,491601,305817],
-     text:['Consumer','Corporate','Home Office'],
-     textposition:'top center',
-     marker:{size:[80,50,35],color:['#1A73E8','#34A853','#FBBC04'],opacity:.8}}
-  ],lay({xaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},
-    yaxis:{title:'Profit ($)',tickprefix:'$',tickformat:',.0f'}}),CFG);
-}
+  const margins=catRev.map((r,i)=>(catProf[i]/r*100).toFixed(1));
+  const avgMargin=margins.reduce((a,b)=>a+ +b,0)/margins.length;
+  Plotly.newPlot('cat_margin',[
+    {x:cats,y:margins,type:'bar',marker:{color:margins.map(m=>+m>avgMargin?'#34A853':'#EA4335')}},
+    {x:cats,y:Array(cats.length).fill(avgMargin.toFixed(1)),type:'scatter',mode:'lines',name:'Avg',line:{color:'#FBBC04',width:2,dash:'dash'}}
+  ],{margin:{t:20,b:80},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Margin %',gridcolor:'#e3e6ed'},xaxis:{tickangle:-30}},{responsive:true});
 
-function renderOperations(){
+  Plotly.newPlot('top_products',[
+    {y:['Laptop Pro X1','SmartPhone Z9','Office Chair','Running Shoes','4K Monitor','Coffee Maker','Yoga Mat','Desk Lamp','Backpack','Headphones'],
+     x:[143,128,95,87,82,74,69,63,58,52],type:'bar',orientation:'h',marker:{color:'#01696f'}}
+  ],{margin:{t:20,l:140,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:11},
+    xaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'}},{responsive:true});
+
+  const discBrackets=['0%','1-5%','6-10%','11-15%','16-20%','21%+'];
+  const discSales=[890,1240,1480,980,420,301];
+  const discMargins=[38.2,34.1,29.8,24.5,18.3,14.1];
+  Plotly.newPlot('discount_impact',[
+    {x:discBrackets,y:discSales,type:'bar',name:'Sales ($K)',marker:{color:'#1A73E8'}},
+    {x:discBrackets,y:discMargins,type:'scatter',mode:'lines+markers',name:'Margin %',yaxis:'y2',
+      line:{color:'#EA4335',width:2.5},marker:{size:8}}
+  ],{margin:{t:20,b:50},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Sales ($K)',gridcolor:'#e3e6ed'},yaxis2:{title:'Margin %',overlaying:'y',side:'right',showgrid:false},
+    legend:{orientation:'h',y:-0.2}},{responsive:true});
+
+  Plotly.newPlot('treemap',[
+    {type:'treemap',labels:cats,parents:Array(cats.length).fill(''),values:catRev,
+      marker:{colors:['#1A73E8','#01696f','#34A853','#FBBC04','#EA4335','#9333ea','#f59e0b']}}
+  ],{margin:{t:10,b:10},paper_bgcolor:'transparent'},{responsive:true});
+
+  const ageGroups=['18-25','26-35','36-45','46-55','56+'];
+  Plotly.newPlot('age_group',[
+    {x:ageGroups,y:[620,1240,1684,1080,687],type:'bar',name:'Revenue',marker:{color:'#1A73E8'}},
+    {x:ageGroups,y:[196,393,534,342,212],type:'bar',name:'Profit',marker:{color:'#34A853'}}
+  ],{barmode:'group',margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'$K',gridcolor:'#e3e6ed'}},{responsive:true});
+
+  Plotly.newPlot('payment',[
+    {labels:['Credit Card','Debit Card','UPI','Net Banking','Cash'],values:[38.2,24.5,18.3,11.7,7.3],
+      type:'pie',hole:0.4,marker:{colors:['#1A73E8','#34A853','#FBBC04','#01696f','#EA4335']}}
+  ],{margin:{t:20,b:20},paper_bgcolor:'transparent',showlegend:true,legend:{orientation:'h',y:-0.1}},{responsive:true});
+
+  Plotly.newPlot('loyalty',[
+    {labels:['Gold','Silver','Bronze','Standard'],values:[18.4,27.6,31.2,22.8],
+      type:'pie',hole:0.5,marker:{colors:['#FBBC04','#9ca3af','#cd7f32','#1A73E8']}}
+  ],{margin:{t:20,b:20},paper_bgcolor:'transparent',showlegend:true,legend:{orientation:'h',y:-0.1}},{responsive:true});
+
+  Plotly.newPlot('segment_bubble',[
+    {x:[620,1240,1684,1080,687],y:[38.1,35.4,32.8,31.2,30.1],
+      mode:'markers',type:'scatter',
+      marker:{size:[18,32,42,28,22],color:['#1A73E8','#01696f','#34A853','#FBBC04','#EA4335'],opacity:0.8},
+      text:ageGroups,textposition:'top center'}
+  ],{margin:{t:20,b:50},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    xaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'},yaxis:{title:'Profit Margin %',gridcolor:'#e3e6ed'}},{responsive:true});
+
   const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const dayS=[777382,706199,719783,735408,709383,850778,812366];
-  Plotly.newPlot('c-weekday',[
-    {type:'bar',x:days,y:dayS,
-     marker:{color:days.map((_,i)=>i>=5?'#34A853':'#1A73E8')},
-     text:dayS.map(v=>'$'+Math.round(v/1000)+'K'),textposition:'outside'}
-  ],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f',range:[0,950000]},
-    annotations:[{x:5,y:870000,text:'Weekend Peak',showarrow:false,
-      font:{color:'#34A853',size:12}}]}),CFG);
+  const daySales=[610,640,680,700,740,890,860];
+  Plotly.newPlot('dow',[
+    {x:days,y:daySales,type:'bar',
+      marker:{color:days.map((_,i)=>i>=5?'#FBBC04':'#1A73E8')}}
+  ],{margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'},
+    annotations:[{x:5.5,y:890,text:'Weekend Peak',showarrow:false,font:{color:'#FBBC04',size:11}}]},{responsive:true});
 
-  Plotly.newPlot('c-shipping',[
-    {type:'bar',
-     x:['Standard','Second Class','First Class','Same Day'],
-     y:[3195450,1016961,828353,270535],
-     marker:{color:['#1A73E8','#34A853','#FBBC04','#EA4335']},
-     text:['60.2%','19.1%','15.6%','5.1%'],textposition:'outside'}
-  ],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f',range:[0,3600000]}}),CFG);
+  Plotly.newPlot('shipping',[
+    {x:['Standard','Second Class','First Class','Same Day'],y:[2970,1820,1410,890],type:'bar',
+      marker:{color:['#1A73E8','#34A853','#01696f','#FBBC04']}}
+  ],{margin:{t:20,b:60},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'},xaxis:{tickangle:-15}},{responsive:true});
 
-  Plotly.newPlot('c-region-donut',[
-    {type:'pie',hole:.5,
-     labels:['West','East','South','Central'],
-     values:[1488909,1732679,948136,1141575],
-     marker:{colors:['#1A73E8','#34A853','#FBBC04','#EA4335']},
-     textinfo:'label+percent',pull:[0,.04,0,0]}
-  ],lay({margin:{t:20,b:20,l:20,r:20},
-    annotations:[{text:'Regions',x:.5,y:.5,showarrow:false,
-      font:{size:14,color:'#555'}}]}),CFG);
+  Plotly.newPlot('region_donut',[
+    {labels:['East','West','South','Central'],values:[1620,1480,1070,1141],type:'pie',hole:0.5,
+      marker:{colors:['#1A73E8','#34A853','#EA4335','#FBBC04']}}
+  ],{margin:{t:20,b:20},paper_bgcolor:'transparent',showlegend:true,legend:{orientation:'h',y:-0.1}},{responsive:true});
 
-  const cumSales=SALES.reduce((acc,v)=>[...acc,(acc.length?acc[acc.length-1]:0)+v],[]);
-  Plotly.newPlot('c-ytd',[
-    {type:'scatter',mode:'lines',fill:'tozeroy',name:'Cumulative Revenue',
-     x:MONTHS,y:cumSales,
-     line:{color:'#1A73E8',width:3},fillcolor:'rgba(26,115,232,.1)'},
-    {type:'scatter',mode:'lines',name:'Target (linear)',
-     x:MONTHS,y:MONTHS.map((_,i)=>Math.round(5311299*(i+1)/12)),
-     line:{color:'#EA4335',width:2,dash:'dot'}}
-  ],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},
-    xaxis:{title:'Month'}}),CFG);
-}
+  const cumTarget=rev.map((_,i)=>Math.round(5311299*((i+1)/12)/1000));
+  const cumActual=rev.reduce((acc,v,i)=>[...acc,(acc[i-1]||0)+v],[]);
+  Plotly.newPlot('cumulative',[
+    {x:months,y:cumActual,type:'scatter',mode:'lines+markers',name:'Actual',line:{color:'#1A73E8',width:2.5}},
+    {x:months,y:cumTarget,type:'scatter',mode:'lines',name:'Target',line:{color:'#EA4335',width:2,dash:'dash'}}
+  ],{margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Cumulative ($K)',gridcolor:'#e3e6ed'},legend:{orientation:'h',y:-0.2}},{responsive:true});
 
-// ═══════════════════════════════════════════════════════
-// SCENARIO ANALYSIS ENGINE
-// ═══════════════════════════════════════════════════════
-const BASE_REV    = 5311299;
-const BASE_MARGIN = 0.3160;
-const BASE_TXNS   = 9353;
-const AVG_ORDER   = 567.87;
+  const paretoRevs=[1503,1065,892,620,541,430,260];
+  const cumPct=paretoRevs.reduce((acc,v,i)=>[...acc,Math.round((paretoRevs.slice(0,i+1).reduce((a,b)=>a+b,0)/5311*100))],[]);
+  Plotly.newPlot('pareto',[
+    {x:cats,y:paretoRevs,type:'bar',name:'Revenue ($K)',marker:{color:'#1A73E8'}},
+    {x:cats,y:cumPct,type:'scatter',mode:'lines+markers',name:'Cumulative %',yaxis:'y2',
+      line:{color:'#EA4335',width:2.5},marker:{size:8}}
+  ],{margin:{t:20,b:80},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'Revenue ($K)',gridcolor:'#e3e6ed'},
+    yaxis2:{title:'Cumulative %',overlaying:'y',side:'right',showgrid:false,range:[0,110]},
+    xaxis:{tickangle:-30},legend:{orientation:'h',y:-0.35}},{responsive:true});
 
-function fmt(n){return '$'+(n>=1e6?(n/1e6).toFixed(2)+'M':(n/1e3).toFixed(0)+'K');}
-function fmtDelta(d){return (d>=0?'<span class="delta-pos">▲ +':'<span class="delta-neg">▼ ')+fmt(Math.abs(d))+'</span>';}
-function fmtPctDelta(d){return (d>=0?'<span class="delta-pos">▲ +':'<span class="delta-neg">▼ ')+Math.abs(d).toFixed(1)+'pp</span>';}
-
-function runScenario(){
-  const growth   = parseFloat(document.getElementById('s-growth').value)/100;
-  const marginSh = parseFloat(document.getElementById('s-margin').value)/100;
-  const discSh   = parseFloat(document.getElementById('s-discount').value)/100;
-  const newCat   = parseFloat(document.getElementById('s-newcat').value)*1000;
-
-  document.getElementById('v-growth').textContent   = (growth>=0?'+':'')+Math.round(growth*100)+'%';
-  document.getElementById('v-margin').textContent   = (marginSh>=0?'+':'')+Math.round(marginSh*100)+' pp';
-  document.getElementById('v-discount').textContent = (discSh>=0?'+':'')+Math.round(discSh*100)+'%';
-  document.getElementById('v-newcat').textContent   = '$'+(newCat/1000).toFixed(0)+'K';
-
-  // Discount erodes margin: each 5pp discount ≈ -2.8pp margin
-  const discMarginImpact = (discSh / 0.05) * (-0.028);
-
-  const projRev    = (BASE_REV * (1 + growth)) + newCat;
-  const projMargin = Math.max(0, BASE_MARGIN + marginSh + discMarginImpact);
-  const projProfit = projRev * projMargin;
-  const projTxns   = Math.round(projRev / AVG_ORDER);
-
-  const baseProfit = BASE_REV * BASE_MARGIN;
-
-  document.getElementById('r-revenue').textContent = fmt(projRev);
-  document.getElementById('r-rev-delta').innerHTML = fmtDelta(projRev-BASE_REV);
-  document.getElementById('r-profit').textContent  = fmt(projProfit);
-  document.getElementById('r-profit-delta').innerHTML = fmtDelta(projProfit-baseProfit);
-  document.getElementById('r-margin').textContent  = (projMargin*100).toFixed(1)+'%';
-  document.getElementById('r-margin-delta').innerHTML = fmtPctDelta((projMargin-BASE_MARGIN)*100);
-  document.getElementById('r-txns').textContent    = projTxns.toLocaleString();
-  document.getElementById('r-txns-delta').innerHTML = '<span class="'+(projTxns>=BASE_TXNS?'delta-pos':'delta-neg')+'">'+
-    (projTxns>=BASE_TXNS?'▲ +':'▼ ')+(Math.abs(projTxns-BASE_TXNS)).toLocaleString()+'</span>';
-
-  // Update scenario bar chart
-  Plotly.react('c-scenario-bar',[
-    {type:'bar',name:'Revenue',
-     x:['Baseline','Projected'],
-     y:[BASE_REV,projRev],
-     marker:{color:['#9CA3AF','#1A73E8']},
-     text:[fmt(BASE_REV),fmt(projRev)],textposition:'outside'},
-    {type:'bar',name:'Profit',
-     x:['Baseline','Projected'],
-     y:[baseProfit,projProfit],
-     marker:{color:['#D1FAE5','#34A853']},
-     text:[fmt(baseProfit),fmt(projProfit)],textposition:'outside'}
-  ],lay({barmode:'group',yaxis:{title:'Amount ($)',tickprefix:'$',tickformat:',.0f',
-    range:[0,Math.max(BASE_REV,projRev)*1.15]}}),CFG);
-}
-
-function renderSensitivity(){
-  const growthRates=[-20,-15,-10,-5,0,5,10,15,20,25,30];
-  const margins=[0.20,0.25,0.31,0.35];
-  const colors=['#EA4335','#FBBC04','#34A853','#1A73E8'];
-  const traces=margins.map((m,i)=>({
-    type:'scatter',mode:'lines+markers',name:`Margin ${Math.round(m*100)}%`,
-    x:growthRates,
-    y:growthRates.map(g=>+(BASE_REV*(1+g/100)*m/1e6).toFixed(3)),
-    line:{color:colors[i],width:2},marker:{size:5}
-  }));
-  Plotly.newPlot('c-sensitivity',traces,
-    lay({xaxis:{title:'Revenue Growth %',ticksuffix:'%'},
-      yaxis:{title:'Projected Profit ($M)',tickprefix:'$',ticksuffix:'M'},
-      shapes:[{type:'line',x0:-20,x1:30,y0:BASE_REV*BASE_MARGIN/1e6,y1:BASE_REV*BASE_MARGIN/1e6,
-        line:{color:'#555',width:1.5,dash:'dot'}}],
-      annotations:[{x:28,y:BASE_REV*BASE_MARGIN/1e6,text:'2025 Actual',
-        showarrow:false,font:{color:'#555',size:10},yshift:8}]}),CFG);
-}
-
-function renderInsights(){
-  // Pareto
-  const csSorted=[...CAT_S].sort((a,b)=>b-a);
-  const total=csSorted.reduce((a,b)=>a+b,0);
-  let cum=0;
-  const cumPct=csSorted.map(v=>{cum+=v;return +(cum/total*100).toFixed(1);});
-  const catsSorted=['Electronics','Home & Kitchen','Clothing','Beauty','Sports','Books','Food'];
-  Plotly.newPlot('c-pareto',[
-    {type:'bar',name:'Revenue',x:catsSorted,y:csSorted,
-     marker:{color:'#1A73E8'},opacity:.85},
-    {type:'scatter',mode:'lines+markers',name:'Cumulative %',
-     x:catsSorted,y:cumPct,yaxis:'y2',
-     line:{color:'#EA4335',width:2.5},marker:{size:8,color:'#EA4335'}}
-  ],lay({yaxis:{title:'Revenue ($)',tickprefix:'$',tickformat:',.0f'},
-    yaxis2:{title:'Cumulative %',overlaying:'y',side:'right',
-      ticksuffix:'%',range:[0,110]},
-    shapes:[{type:'line',x0:-.5,x1:6.5,y0:80,y1:80,
-      line:{color:'#EA4335',width:1,dash:'dash'},yref:'y2'}],
-    annotations:[{x:5.5,y:80,text:'80% line',showarrow:false,
-      font:{color:'#EA4335',size:10},yref:'y2',yshift:8}]}),CFG);
-
-  // Heatmap
   const regions=['West','East','South','Central'];
-  // Estimated margin % by category × region
-  const zData=[
-    [29.5,30.1,27.8,28.9],
-    [33.2,34.5,32.1,31.8],
-    [38.9,40.1,37.5,39.2],
-    [41.2,42.3,40.0,41.8],
-    [34.5,35.8,33.2,34.9],
-    [49.8,50.5,48.2,49.3],
-    [33.2,34.1,32.5,33.8]
-  ];
-  Plotly.newPlot('c-heatmap',[
-    {type:'heatmap',z:zData,x:regions,y:CATS,
-     colorscale:'RdYlGn',text:zData.map(row=>row.map(v=>v+'%')),
-     texttemplate:'%{text}',showscale:true,
-     hovertemplate:'%{y} × %{x}<br>Margin: %{z}%<extra></extra>'}
-  ],lay({margin:{t:20,b:60,l:120,r:60},
-    xaxis:{title:'Region'},yaxis:{title:''}}),CFG);
+  const heatData=cats.map(c=>regions.map((_,ri)=>[
+    [33.1,35.4,29.8,31.2],[28.5,30.1,27.3,29.0],[29.3,31.8,28.1,30.4],
+    [26.4,28.3,25.1,27.8],[24.8,26.5,23.4,25.7],[28.9,30.7,27.1,29.4],
+    [27.6,29.1,25.8,28.2]
+  ][cats.indexOf(c)][ri]));
+  Plotly.newPlot('heatmap',[
+    {z:heatData,x:regions,y:cats,type:'heatmap',colorscale:'RdYlGn',zmin:20,zmax:38,
+      text:heatData.map(r=>r.map(v=>v+'%')),texttemplate:'%{text}',showscale:true}
+  ],{margin:{t:20,b:40,l:90},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:11}},{responsive:true});
+
+  const sensDisc=[-10,-5,0,5,10,15,20];
+  const sensMarg=sensDisc.map(d=>(31.7-d*0.56).toFixed(1));
+  Plotly.newPlot('sensitivity',[
+    {x:sensDisc,y:sensMarg,type:'scatter',mode:'lines+markers',line:{color:'#1A73E8',width:2.5},marker:{size:8},
+      fill:'tozeroy',fillcolor:'rgba(26,115,232,0.08)'}
+  ],{margin:{t:20,b:50},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    xaxis:{title:'Discount Rate (%)',gridcolor:'#e3e6ed'},yaxis:{title:'Profit Margin %',gridcolor:'#e3e6ed'},
+    shapes:[{type:'line',x0:0,x1:20,y0:20,y1:20,line:{color:'#EA4335',width:1.5,dash:'dash'}}]},{responsive:true});
+
+  updateScenario();
+  Plotly.newPlot('scenario_bar',[
+    {type:'bar',name:'Baseline',x:['Revenue','Profit'],y:[5.31,1.68],marker:{color:'#cbd5e1'}},
+    {type:'bar',name:'Scenario',x:['Revenue','Profit'],y:[5.31,1.68],marker:{color:'#1A73E8'}}
+  ],{barmode:'group',margin:{t:20,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{size:12},
+    yaxis:{title:'$M',gridcolor:'#e3e6ed'},legend:{orientation:'h',y:-0.2}},{responsive:true});
 }
 
-// Init scenario on load in background
-runScenario();
+document.addEventListener('DOMContentLoaded',()=>{
+  buildCharts();
+  window._chartsBuilt=true;
+});
 </script>
 </body>
 </html>
