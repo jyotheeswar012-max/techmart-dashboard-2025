@@ -1,116 +1,142 @@
 # 🛍️ TechMart Business Analytics Dashboard 2025
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Click%20Here-success?style=for-the-badge)](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/docs/)
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
-[![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)]()
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)]()
-[![Built by Me](https://img.shields.io/badge/Built%20%26%20Deployed-by%20Jyotheeswar-01696f?style=for-the-badge)](https://github.com/jyotheeswar012-max)
+[![Live Dashboard](https://img.shields.io/badge/🚀%20Live%20Demo-GitHub%20Pages-success?style=for-the-badge)](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Plotly](https://img.shields.io/badge/Plotly-5.x-3F4F75?style=flat-square&logo=plotly&logoColor=white)](https://plotly.com)
+[![pytest](https://img.shields.io/badge/Tests-pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](./tests/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
 
-> A fully interactive business intelligence dashboard I built from scratch — tracking $5.3M+ in retail sales across 9,353 transactions with 16+ dynamic Plotly charts covering sales trends, profit margins, regional performance, customer analytics & discount impact.
-
-🔗 **Live Demo:** [jyotheeswar012-max.github.io/techmart-dashboard-2025/docs/](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/docs/)
+> **An end-to-end retail analytics project** — automated data pipeline, 12+ interactive charts, scenario analysis engine, and a full pytest test suite.
 
 ---
 
-## 👨‍💻 About This Project
+## 📊 Live Dashboard
 
-I built **TechMart Business Analytics Dashboard** entirely by myself — from structuring the dataset, to writing all the Python/Plotly code that generates the charts, to deploying it as a live static site on GitHub Pages.
+**👉 [View Live →](https://jyotheeswar012-max.github.io/techmart-dashboard-2025/)**
 
-- ✅ **Dataset structured by me** — 9,353 transactions across 7 product categories, 4 US regions
-- ✅ **All charts coded by me** — 16+ custom Plotly visualizations
-- ✅ **Deployed by me** — hosted live on GitHub Pages with zero-config
-- ✅ **Analysis designed by me** — including discount impact, profit margin, and customer segmentation
-
----
-
-## 📊 Dashboard Features
-
-| Chart | Insight |
+| Metric | Value |
 |---|---|
-| 📅 **Monthly Sales & Profit Trends** | Line + bar chart tracking revenue & profit over 12 months |
-| 📈 **Month-over-Month Growth %** | Positive/negative growth bars with color coding |
-| 🗓️ **Quarterly Performance** | Q1–Q4 revenue and profit comparison |
-| 🎯 **Category Breakdown** | Horizontal bar — sales & profit by 7 product categories |
-| 🌏 **Regional Analysis** | Donut chart across 4 US regions (Central, East, South, West) |
-| 👤 **Customer Segments** | Consumer vs Corporate vs Home Office |
-| 💳 **Payment Methods** | Sales by Credit Card, Debit, PayPal, Apple Pay, etc. |
-| 🎂 **Age Group Analysis** | Sales & profit by customer age brackets |
-| 🏆 **Top 10 Products** | Best-performing SKUs by revenue |
-| 📦 **Shipping Mode Analysis** | Standard vs Express vs Same Day |
-| 📅 **Weekday Sales Pattern** | Which days drive the most revenue |
-| 💰 **Profit Margin % by Category** | Actual margin % — not just raw profit |
-| 🏷️ **Discount Impact Analysis** | Does higher discount lead to higher loss? |
-| 🔄 **Customer Loyalty Tiers** | Bronze / Silver / Gold / Platinum breakdown |
+| 💰 Total Revenue | $5,357,458 |
+| 🛝 Transactions | 9,353 |
+| 👥 Customers | 1,198 |
+| 📈 Interactive Charts | 12+ |
+| 🌎 Regions Covered | 4 (US National) |
 
 ---
 
-## 🛠️ How I Built It
-
-### 1. Dataset
-I structured a realistic retail dataset of 9,353 transactions across 7 product categories, 4 US regions, and multiple customer segments — stored as `techmart_sales_2025.csv`.
-
-### 2. Chart Generation
-I wrote Python scripts using **Pandas** for data aggregation and **Plotly** for all 16+ interactive charts. The charts are exported as a self-contained HTML file — no backend needed.
-
-### 3. Deployment
-I deployed the dashboard on **GitHub Pages** directly from the `/docs` folder. Every push to `main` updates the live site automatically.
-
----
-
-## 🔢 Key Stats
+## 📁 Project Structure
 
 ```
-💰 Total Revenue      : $5,357,458
-📦 Transactions       : 9,353
-👥 Unique Customers   : 1,198
-📈 Avg Profit Margin  : 31.7%
-🗂️ Product Categories : 7
-🌎 Regions            : 4 (US National)
-📊 Interactive Charts : 16+
-🛠️ Built & Deployed   : Entirely by me
+techmart-dashboard-2025/
+├── docs/                        # GitHub Pages (live dashboard)
+│   └── index.html
+├── pipeline/                    # ✨ Automated data pipeline
+│   ├── __init__.py
+│   └── fetch_data.py            # yfinance + requests + metric helpers
+├── tests/                       # ✅ pytest test suite
+│   ├── __init__.py
+│   ├── test_metrics.py          # Unit tests: CAGR, margin, scenario
+│   └── test_pipeline_integration.py
+├── scenario_analysis/           # 📈 What-If analysis documentation
+│   └── README.md
+├── superstore_2025_full.csv     # Source dataset (9,353 transactions)
+├── requirements.txt
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-## 🚀 Run Locally
+## 🔄 Automated Data Pipeline
+
+The `pipeline/fetch_data.py` module replaces static CSV files with a live data ingestion system:
 
 ```bash
-# Clone the repo
-git clone https://github.com/jyotheeswar012-max/techmart-dashboard-2025.git
-cd techmart-dashboard-2025
+# Run the full pipeline
+python pipeline/fetch_data.py
+```
 
+| Source | Library | Data |
+|---|---|---|
+| Stock/ETF prices | `yfinance` | SPY, QQQ, XRT (Retail ETF) |
+| FX rates | `requests` + Open Exchange Rates | USD cross rates |
+| Internal sales | CSV → timestamped snapshot | Superstore transactions |
+
+**Output:** `data/market_context.csv`, `data/fx_rates.csv`, `data/superstore_snapshot_YYYYMMDD.csv`
+
+---
+
+## 📈 Scenario Analysis
+
+Ask "What if?" questions and see the impact on revenue and profit:
+
+```python
+from pipeline.fetch_data import scenario_revenue_impact
+
+# What if TechMart grows 5% next year?
+result = scenario_revenue_impact(
+    base_revenue=5_357_458,
+    growth_pct=0.05,
+    margin=0.1245
+)
+# Projected Revenue: $5,625,331  |  Delta: +$267,873
+```
+
+See [`scenario_analysis/README.md`](./scenario_analysis/README.md) for full scenarios (optimistic, pessimistic, margin compression).
+
+---
+
+## ✅ Running Tests
+
+```bash
 # Install dependencies
 pip install -r requirements.txt
 
-# Open the live dashboard
-open docs/index.html
+# Run all tests with coverage
+pytest tests/ -v --tb=short
+
+# With coverage report
+pytest tests/ -v --cov=pipeline --cov-report=term-missing
 ```
+
+**Test coverage includes:**
+- `calculate_cagr` — 8 test cases (happy path, edge cases, error handling)
+- `calculate_profit_margin` — 5 test cases
+- `scenario_revenue_impact` — 5 test cases
+- `refresh_superstore_snapshot` — integration tests
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Tool | Purpose |
-|------|--------|
-| Python 3.11 | Data processing & chart generation |
-| Pandas | Data aggregation & transformation |
-| NumPy | Numerical calculations |
-| Plotly | All 16+ interactive visualizations |
-| HTML5 / CSS3 | Dashboard layout & styling |
-| GitHub Pages | Live deployment |
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=flat-square&logo=plotly&logoColor=white)
+![yfinance](https://img.shields.io/badge/yfinance-0.2-purple?style=flat-square)
+![pytest](https://img.shields.io/badge/pytest-7.x-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 
 ---
 
-## 👤 Author
+## 🚀 Quick Start
 
-**Jyotheeswar Gudipalli**  
-B.Tech Data Science 2027 · Manipal University Jaipur  
-GitHub: [@jyotheeswar012-max](https://github.com/jyotheeswar012-max)
+```bash
+git clone https://github.com/jyotheeswar012-max/techmart-dashboard-2025.git
+cd techmart-dashboard-2025
+pip install -r requirements.txt
 
-*Built, designed, and deployed entirely by me as a personal portfolio project.*
+# Run pipeline
+python pipeline/fetch_data.py
+
+# Run tests
+pytest tests/ -v
+
+# Open dashboard
+open docs/index.html
+```
 
 ---
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+MIT © 2025 [A. Jyotheeswar Reddy](https://github.com/jyotheeswar012-max)
